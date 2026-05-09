@@ -1,21 +1,27 @@
+//ATALOGO DO SITE:
+
 const products = [
+    //Whisky em geral
     {
         category: "Copão",
-        name: "Copão de Whisky",
-        price: 40,
-        image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b",
+        name: "Copão de Red Label Premium",
+        description: "Copão de 700Ml com Whisky + Redbull 250ml + Gelo de coco.",
+        price: 30,
+        image: "/img/Produtos/redlabel.png", //IMAGEM DEIXADA DE EXEMPLO
         available: true
     },
     {
         category: "Copão",
-        name: "Copão de Whisky economico",
-        price: 25,
-        image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b",
+        name: "Copão de Red Label Basico",
+        description: "Copão de 700Ml com Whisky + Energetico Vibe + Gelo de coco.",
+        price: 22,
+        image: "/img/Produtos/redlabel.png",
         available: true
     },
     {
         category: "Doses",
         name: "Dose Jack Daniels",
+        description: "Dose premium Jack Daniels 50ml.",
         price: 15,
         image: "https://images.unsplash.com/photo-1569529465841-dfecdab7503b",
         available: true
@@ -23,6 +29,7 @@ const products = [
     {
         category: "Energético",
         name: "Red Bull",
+        description: "Energético Red Bull lata 250ml gelado.",
         price: 14,
         image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e",
         available: true
@@ -30,6 +37,7 @@ const products = [
     {
         category: "Gelo de Sabor",
         name: "Gelo de Morango",
+        description: "Gelo saborizado de morango para drinks.",
         price: 8,
         image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd",
         available: true
@@ -37,6 +45,7 @@ const products = [
     {
         category: "Cerveja",
         name: "Heineken Long Neck",
+        description: "Long neck Heineken extremamente gelada.",
         price: 12,
         image: "https://images.unsplash.com/photo-1608270586620-248524c67de9",
         available: false
@@ -44,11 +53,13 @@ const products = [
     {
         category: "Combos",
         name: "Combo Whisky + Energético",
+        description: "Combo completo com whisky, energético e gelo.",
         price: 120,
         image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b",
         available: true
     }
 ];
+
 let cart = [];
 function renderProducts(category = null) {
     const container =
@@ -65,34 +76,40 @@ function renderProducts(category = null) {
     } else {
         categoryTitle.innerText = "Produtos";
     }
+
     filteredProducts.forEach(product => {
         container.innerHTML += `
-    <div class="card">
-        <img src="${product.image}">
-        <div class="card-content">
-            <h4>${product.name}</h4>
-            <div class="price">
-                R$ ${product.price.toFixed(2)}
-            </div>
-            ${product.available
+            <div class="card">
+                <img src="${product.image}">
+                <div class="card-content">
+                    <h4>${product.name}</h4>
+                    <p class="description">
+                        ${product.description}
+                    </p>
+                    <div class="price">
+                        R$ ${product.price.toFixed(2)}
+                    </div>
+                    ${product.available
                 ?
                 `<button
-                    class="add-btn"
-                    onclick="addToCart('${product.name}', ${product.price})">
-                    Adicionar
-                </button>`
+                            class="add-btn"
+                            onclick="addToCart('${product.name}', ${product.price})">
+                            Adicionar
+                        </button>`
                 :
                 `<button
-                    class="out-btn"
-                    disabled>
-                    ESGOTADO
-                </button>`
+                            class="out-btn"
+                            disabled>
+                            ESGOTADO
+                        </button>`
             }
-        </div>
-    </div>
-`;
+                </div>
+            </div>
+        `;
     });
+
 }
+
 function filterProducts(category) {
     renderProducts(category);
     document
@@ -101,6 +118,7 @@ function filterProducts(category) {
             behavior: "smooth"
         });
 }
+
 renderProducts();
 function toggleCart() {
     document
@@ -108,6 +126,7 @@ function toggleCart() {
         .classList
         .toggle("active");
 }
+
 function addToCart(name, price) {
     cart.push({
         name,
@@ -115,10 +134,13 @@ function addToCart(name, price) {
     });
     updateCart();
 }
+
 function removeItem(index) {
     cart.splice(index, 1);
     updateCart();
+
 }
+
 function updateCart() {
     const cartItems =
         document.getElementById("cart-items");
@@ -128,26 +150,29 @@ function updateCart() {
         document.getElementById("cart-count");
     cartItems.innerHTML = "";
     let total = 0;
+
     cart.forEach((item, index) => {
         total += item.price;
         cartItems.innerHTML += `
-    <div class="cart-item">
-        <div>
-            <strong>${item.name}</strong>
-            <br>
-            R$ ${item.price.toFixed(2)}
-        </div>
-        <button
-            class="remove-btn"
-            onclick="removeItem(${index})">
-            ✕
-        </button>
-    </div>
-`;
+            <div class="cart-item">
+                <div>
+                    <strong>${item.name}</strong>
+                    <br>
+                    R$ ${item.price.toFixed(2)}
+                </div>
+                <button
+                    class="remove-btn"
+                    onclick="removeItem(${index})">
+                    ✕
+                </button>
+            </div>
+        `;
     });
+
     cartTotal.innerText = total.toFixed(2);
     cartCount.innerText = cart.length;
 }
+
 function sendWhatsApp() {
     if (cart.length <= 0) {
         alert("Seu carrinho está vazio!");
@@ -162,25 +187,28 @@ function sendWhatsApp() {
     const observacao =
         document.getElementById("observacao").value;
     let total = 0;
+
     let message =
         `🍺 *NOVO PEDIDO - ADEGA DO VIZINHO* %0A%0A`;
     message += `👤 Nome: ${nome}%0A`;
     message += `📍 Endereço: ${endereco}%0A`;
     message += `💳 Pagamento: ${pagamento}%0A%0A`;
     message += `🛒 *Itens:* %0A`;
-    message += `%0A💰 Total: R$ ${total.toFixed(2)}%0A`;
-    if (observacao) {
-        message +=
-            `%0A📝 Observação: ${observacao}%0A`;
-    }
     cart.forEach(item => {
         total += item.price;
         message +=
             `- ${item.name} | R$ ${item.price.toFixed(2)}%0A`;
+        if (observacao) {
+            message += `%0A📝 Observação: ${observacao}%0A`;
+        }
+
     });
-    // TROQUE PELO SEU NÚMERO
+
+    message += `%0A💰 Total: R$ ${total.toFixed(2)}%0A`;
     const phone = "5511917742509";
     const url =
         `https://wa.me/${phone}?text=${message}`;
     window.open(url, "_blank");
+
 }
+/**/

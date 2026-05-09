@@ -26,6 +26,7 @@ body {
 }
 
 /* HEADER */
+
 header {
     width: 100%;
     padding: 18px 6%;
@@ -79,18 +80,24 @@ header {
 }
 
 /* HOME */
+
 .home-page {
     min-height: 100vh;
+
     background:
         linear-gradient(rgba(0, 0, 0, 0.85),
             rgba(0, 0, 0, 0.9)),
         url('img/Backgroud.png');
+
     background-size: cover;
     background-position: center;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     text-align: center;
+
     padding: 120px 20px 50px;
 }
 
@@ -181,7 +188,8 @@ header {
     font-size: 18px;
 }
 
-/* TITULO */
+/* TITULOS */
+
 .section-title {
     text-align: center;
     margin-bottom: 50px;
@@ -193,6 +201,7 @@ header {
 }
 
 /* CATEGORIAS */
+
 .categories {
     padding: 100px 6%;
 }
@@ -232,6 +241,7 @@ header {
 }
 
 /* PRODUTOS */
+
 .products {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -266,6 +276,14 @@ header {
 .card-content h4 {
     font-size: 24px;
     margin-bottom: 10px;
+}
+
+.description {
+    color: #cfcfcf;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+    min-height: 45px;
 }
 
 .price {
@@ -305,6 +323,7 @@ header {
 }
 
 /* CARRINHO */
+
 .cart {
     position: fixed;
     top: 0;
@@ -371,6 +390,7 @@ header {
 }
 
 /* FORM */
+
 .checkout {
     display: flex;
     flex-direction: column;
@@ -402,6 +422,8 @@ header {
     cursor: pointer;
 }
 
+/* FOOTER */
+
 footer {
     text-align: center;
     padding: 40px 20px;
@@ -410,7 +432,9 @@ footer {
 }
 
 /* RESPONSIVO */
+
 @media(max-width:768px) {
+
     .home-content h1 {
         font-size: 45px;
     }
@@ -422,9 +446,11 @@ footer {
     .section-title h2 {
         font-size: 35px;
     }
+
 }
 
 @media(max-width:480px) {
+
     .hero-logo {
         width: 120px;
         height: 120px;
@@ -446,4 +472,5 @@ footer {
     .logo h1 {
         display: none;
     }
+
 }
