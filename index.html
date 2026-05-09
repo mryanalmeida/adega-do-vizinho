@@ -4,123 +4,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Adega do Vizinho</title>
+
     <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
     <header>
         <div class="logo">
-            <img src="img/Logo.jpeg">
-            <h1>Adega do Vizinho</h1>
+            <img src="img/Logo.jpeg" alt="Logo Adega do Vizinho">
+            <div>
+                <h1>Adega do Vizinho</h1>
+                <span>Sempre perto, sempre gelada</span>
+            </div>
         </div>
 
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#categorias">Catálogo</a>
+            <a href="#contato">Contato</a>
+        </nav>
+
         <button class="cart-btn" onclick="toggleCart()">
-            🛒 Carrinho (<span id="cart-count">0</span>)
+            🛒 <span id="cart-count">0</span>
         </button>
     </header>
 
-    <!-- HOME -->
-    <section class="home-page">
+    <section class="home-page" id="inicio">
         <div class="home-content">
-            <img src="img/Logo.jpeg" class="hero-logo">
-            <h1>Adega do Vizinho</h1>
-            <p class="subtitle">
-                Sempre perto, sempre gelada 🍺
-            </p>
-            <div class="about-box">
-                <h3>Sobre Nós</h3>
-                <p>
-                    A Adega do Vizinho nasceu para trazer
-                    as melhores bebidas, copões,
-                    combos e cervejas geladas
-                    com entrega rápida e qualidade.
+            <div class="home-text">
+                <span class="tag">🔥 Adega online</span>
+
+                <h1>
+                    Bebida gelada,
+                    <br>
+                    pedido fácil.
+                </h1>
+
+                <p class="subtitle">
+                    Copões, cervejas, energéticos, gelos de sabor e combos para deixar seu rolê completo.
                 </p>
+
+                <div class="home-actions">
+                    <a href="#categorias" class="catalog-btn">
+                        Ver Catálogo
+                    </a>
+
+                    <a href="https://wa.me/5511917742509" target="_blank" class="outline-btn">
+                        Chamar no WhatsApp
+                    </a>
+                </div>
             </div>
 
-            <div class="contact-buttons">
-                <!-- TROQUE PELO SEU INSTAGRAM -->
-                <a href="https://instagram.com/_adegadovizinho" target="_blank" class="social-btn insta">
-                    Instagram
-                </a>
-                <!-- TROQUE PELO SEU WHATS -->
-                <a href="https://wa.me/5511917742509" target="_blank" class="social-btn whats">
-                    WhatsApp
-                </a>
+            <div class="home-card">
+                <img src="img/Logo.jpeg" class="hero-logo" alt="Logo Adega do Vizinho">
+
+                <h2>Adega do Vizinho</h2>
+
+                <p>
+                    Entrega rápida, bebidas geladas e atendimento direto pelo WhatsApp.
+                </p>
+
+                <div class="status-box">
+                    <span></span>
+                    Atendimento online
+                </div>
             </div>
-            <a href="#categorias" class="catalog-btn">
-                Ver Catálogo
-            </a>
         </div>
     </section>
 
-    <!-- CATEGORIAS -->
+    <section class="about-section">
+        <div class="about-box">
+            <span class="small-title">Sobre nós</span>
+
+            <h2>A adega certa para o seu momento</h2>
+
+            <p>
+                A Adega do Vizinho nasceu para trazer praticidade para quem quer comprar bebidas de forma rápida,
+                simples e sem enrolação. Você escolhe os produtos, monta seu pedido e envia tudo direto pelo WhatsApp.
+            </p>
+        </div>
+
+        <div class="info-grid" id="contato">
+            <a href="https://instagram.com/_adegadovizinho" target="_blank" class="info-card">
+                <strong>Instagram</strong>
+                <span>@_adegadovizinho</span>
+            </a>
+
+            <a href="https://wa.me/5511917742509" target="_blank" class="info-card">
+                <strong>WhatsApp</strong>
+                <span>(11) 91774-2509</span>
+            </a>
+
+            <div class="info-card">
+                <strong>Pedido</strong>
+                <span>Escolha, adicione no carrinho e envie</span>
+            </div>
+        </div>
+    </section>
+
     <section class="categories" id="categorias">
         <div class="section-title">
             <h2>Categorias</h2>
+            <br>
+            <span>Escolha uma opção</span>
         </div>
+
         <div class="category-grid">
 
             <button class="category-card" onclick="filterProducts('Copão')">
-                🍹
+                <div>🍹</div>
                 <span>Copão</span>
             </button>
-           
-            <!-- DESABILITADO POR ENQUANTO -->
-            
-           <!--
-            <button class="category-card" onclick="filterProducts('Doses')">
-                🥃
-                <span>Doses</span>
-            </button>
-            -->
 
             <button class="category-card" onclick="filterProducts('Energético')">
-                ⚡
+                <div>⚡</div>
                 <span>Energético</span>
             </button>
 
             <button class="category-card" onclick="filterProducts('Gelo de Sabor')">
-                ❄️
+                <div>❄️</div>
                 <span>Gelo de Sabor</span>
             </button>
 
             <button class="category-card" onclick="filterProducts('Cerveja')">
-                🍺
+                <div>🍺</div>
                 <span>Cerveja</span>
             </button>
 
             <button class="category-card" onclick="filterProducts('Combos')">
-                🔥
+                <div>🔥</div>
                 <span>Combos</span>
             </button>
+
         </div>
     </section>
 
-    <!-- PRODUTOS -->
-    <div class="section-title">
-        <h2 id="category-title">
-            Produtos
-        </h2>
-    </div>
-    <section class="products" id="products-container"></section>
+    <section class="catalog-section">
+        <div class="section-title">
+            <span>Produtos disponíveis</span>
+            <h2 id="category-title">Produtos</h2>
+        </div>
 
-    <!-- CARRINHO -->
+        <section class="products" id="products-container"></section>
+    </section>
+
     <div class="cart" id="cart">
         <div class="cart-top">
-            <h2>Seu Pedido</h2>
+            <div>
+                <h2>Seu Pedido</h2>
+                <p>Confira os itens antes de enviar.</p>
+            </div>
+
             <button class="close-btn" onclick="toggleCart()">
                 ✕
             </button>
         </div>
 
         <div id="cart-items"></div>
+
         <div class="total">
             Total: R$ <span id="cart-total">0.00</span>
         </div>
@@ -128,26 +179,28 @@
         <div class="checkout">
             <input type="text" id="nome" placeholder="Seu nome">
             <input type="text" id="endereco" placeholder="Seu endereço">
+
             <select id="pagamento">
-                <option value="">
-                    Forma de pagamento
-                </option>
+                <option value="">Forma de pagamento</option>
                 <option>Pix</option>
                 <option>Dinheiro</option>
                 <option>Cartão Crédito</option>
                 <option>Cartão Débito</option>
             </select>
-            <textarea id="observacao" rows="4" placeholder="Observações do pedido">
-        </textarea>
+
+            <textarea id="observacao" rows="4" placeholder="Observações do pedido"></textarea>
+
             <button class="send-btn" onclick="sendWhatsApp()">
-                Finalizar Pedido
+                Enviar Pedido no WhatsApp
             </button>
         </div>
     </div>
 
     <footer>
-        © 2025 Adega do Vizinho • Todos os direitos reservados
+        <strong>Adega do Vizinho</strong>
+        <p>© 2025 • Todos os direitos reservados</p>
     </footer>
+
     <script src="script.js"></script>
 </body>
 
