@@ -4,24 +4,34 @@ const products = [
     {
         category: "Copão",
         name: "Copão de Red Label Premium",
-        description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
-        price: 30,
-        image: "img/Produtos/redlabel.png",
+        description: "Copão de 700ml com Whisky  + Red Bull 250ml + Gelo de coco.",
+        price: 0,
+        image: "img/Produtos/red-premium.png",
         available: true
     },
     {
         category: "Copão",
         name: "Copão de Red Label Básico",
-        description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
-        price: 22,
-        image: "img/Produtos/redlabel.png",
+        description: "Copão de 700ml com Whisky) + Energético Vibe + Gelo de coco.",
+        price: 0,
+        image: "img/Produtos/red-basico.png",
         available: true
     },
+
+    {
+        category: "Copão",
+        name: "Copão de Jack Daniels Premium",
+        description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
+        price: 0,
+        image: "img/Produtos/jack-premium.png",
+        available: true
+    },
+
     {
         category: "Energético",
         name: "Red Bull",
         description: "Energético Red Bull lata 250ml gelado.",
-        price: 14,
+        price: 0,
         image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e",
         available: true
     },
@@ -29,7 +39,7 @@ const products = [
         category: "Gelo de Sabor",
         name: "Gelo de Morango",
         description: "Gelo saborizado de morango para drinks.",
-        price: 8,
+        price: 0,
         image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd",
         available: true
     },
@@ -37,7 +47,7 @@ const products = [
         category: "Cerveja",
         name: "Heineken Long Neck",
         description: "Long neck Heineken extremamente gelada.",
-        price: 12,
+        price: 0,
         image: "https://images.unsplash.com/photo-1608270586620-248524c67de9",
         available: false
     },
@@ -45,7 +55,7 @@ const products = [
         category: "Combos",
         name: "Combo Whisky + Energético",
         description: "Combo completo com whisky, energético e gelo.",
-        price: 120,
+        price: 0,
         image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b",
         available: true
     }
