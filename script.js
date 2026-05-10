@@ -1,37 +1,41 @@
-// CATÁLOGO DO SITE
-
 const products = [
     {
         category: "Copão",
         name: "Copão de Red Label Premium",
-        description: "Copão de 700ml com Whisky  + Red Bull 250ml + Gelo de coco.",
-        price: 0,
+        description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
+        price: 30,
         image: "img/Produtos/red-premium.png",
         available: true
     },
     {
         category: "Copão",
         name: "Copão de Red Label Básico",
-        description: "Copão de 700ml com Whisky) + Energético Vibe + Gelo de coco.",
-        price: 0,
+        description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
+        price: 28,
         image: "img/Produtos/red-basico.png",
         available: true
     },
-
     {
         category: "Copão",
         name: "Copão de Jack Daniels Premium",
         description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
-        price: 0,
+        price: 38,
         image: "img/Produtos/jack-premium.png",
         available: true
     },
-
+    {
+        category: "Copão",
+        name: "Copão de Jack Daniels Básico",
+        description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
+        price: 35,
+        image: "img/Produtos/jack-basico.png",
+        available: true
+    },
     {
         category: "Energético",
         name: "Red Bull",
         description: "Energético Red Bull lata 250ml gelado.",
-        price: 0,
+        price: 14,
         image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e",
         available: true
     },
@@ -39,7 +43,7 @@ const products = [
         category: "Gelo de Sabor",
         name: "Gelo de Morango",
         description: "Gelo saborizado de morango para drinks.",
-        price: 0,
+        price: 8,
         image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd",
         available: true
     },
@@ -47,7 +51,7 @@ const products = [
         category: "Cerveja",
         name: "Heineken Long Neck",
         description: "Long neck Heineken extremamente gelada.",
-        price: 0,
+        price: 12,
         image: "https://images.unsplash.com/photo-1608270586620-248524c67de9",
         available: false
     },
@@ -55,101 +59,92 @@ const products = [
         category: "Combos",
         name: "Combo Whisky + Energético",
         description: "Combo completo com whisky, energético e gelo.",
-        price: 0,
+        price: 120,
         image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b",
         available: true
     }
 ];
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("adega-cart")) || [];
+let currentCategory = null;
 
-// TOAST PERSONALIZADO
+function saveCart() {
+    localStorage.setItem("adega-cart", JSON.stringify(cart));
+}
 
 function showToast(message) {
-
-    const existingToast =
-        document.querySelector(".toast-message");
+    const existingToast = document.querySelector(".toast-message");
 
     if (existingToast) {
-
         existingToast.remove();
-
     }
 
-    const toast =
-        document.createElement("div");
+    const toast = document.createElement("div");
 
     toast.className = "toast-message";
-
     toast.innerText = message;
 
     document.body.appendChild(toast);
 
     setTimeout(() => {
-
         toast.classList.add("show");
-
     }, 100);
 
     setTimeout(() => {
-
         toast.classList.remove("show");
 
         setTimeout(() => {
-
             toast.remove();
-
         }, 300);
-
     }, 2500);
-
 }
 
 function formatPrice(value) {
-
-    return value
-        .toFixed(2)
-        .replace(".", ",");
-
+    return value.toFixed(2).replace(".", ",");
 }
 
-function renderProducts(category = null) {
-
-    const container =
-        document.getElementById("products-container");
-
-    const categoryTitle =
-        document.getElementById("category-title");
+function renderProducts(category = null, search = "") {
+    const container = document.getElementById("products-container");
+    const categoryTitle = document.getElementById("category-title");
 
     container.innerHTML = "";
 
     let filteredProducts = products;
 
     if (category) {
-
-        filteredProducts =
-            products.filter(product =>
-                product.category === category
-            );
-
+        filteredProducts = products.filter(product => product.category === category);
         categoryTitle.innerText = category;
-
     } else {
-
         categoryTitle.innerText = "Produtos";
+    }
 
+    if (search.trim() !== "") {
+        const term = search.toLowerCase();
+
+        filteredProducts = products.filter(product =>
+            product.name.toLowerCase().includes(term) ||
+            product.description.toLowerCase().includes(term) ||
+            product.category.toLowerCase().includes(term)
+        );
+
+        categoryTitle.innerText = "Resultado da busca";
+    }
+
+    if (filteredProducts.length === 0) {
+        container.innerHTML = `
+            <div class="empty-products">
+                Nenhum produto encontrado.
+            </div>
+        `;
+        return;
     }
 
     filteredProducts.forEach(product => {
-
         container.innerHTML += `
-
-            <div class="card">
-
+            <div class="card reveal">
                 <img src="${product.image}" alt="${product.name}">
 
                 <div class="card-content">
-
                     <h4>${product.name}</h4>
 
                     <p class="description">
@@ -161,105 +156,77 @@ function renderProducts(category = null) {
                     </div>
 
                     ${product.available
-
-                ?
-
-                `
-                        <button
-                            class="add-btn"
-                            onclick="addToCart('${product.name}')">
-
-                            Adicionar
-
-                        </button>
+                ? `
+                            <button class="add-btn" onclick="addToCart('${product.name}')">
+                                Adicionar
+                            </button>
                         `
-
-                :
-
-                `
-                        <button
-                            class="out-btn"
-                            disabled>
-
-                            ESGOTADO
-
-                        </button>
+                : `
+                            <button class="out-btn" disabled>
+                                ESGOTADO
+                            </button>
                         `
             }
-
                 </div>
-
             </div>
-
         `;
-
     });
 
+    revealOnScroll();
 }
 
 function filterProducts(category) {
+    currentCategory = category;
+
+    const searchInput = document.getElementById("search-input");
+
+    if (searchInput) {
+        searchInput.value = "";
+    }
 
     renderProducts(category);
 
-    document
-        .getElementById("products-container")
-        .scrollIntoView({
+    document.getElementById("products-container").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+function searchProducts() {
+    const search = document.getElementById("search-input").value;
+
+    renderProducts(currentCategory, search);
+
+    if (search.trim() !== "") {
+        document.getElementById("products-container").scrollIntoView({
             behavior: "smooth"
         });
-
+    }
 }
 
 function toggleCart() {
-
-    document
-        .getElementById("cart")
-        .classList
-        .toggle("active");
-
+    document.getElementById("cart").classList.toggle("active");
 }
 
 function openCart() {
-
-    document
-        .getElementById("cart")
-        .classList
-        .add("active");
-
+    document.getElementById("cart").classList.add("active");
 }
 
-function addToCart(productName) {
+function closeCart() {
+    document.getElementById("cart").classList.remove("active");
+}
 
-    const product =
-        products.find(item =>
-            item.name === productName
-        );
-
-    if (!product || !product.available) {
-
-        return;
-
-    }
-
-    const firstItem =
-        cart.length === 0;
-
-    const existingItem =
-        cart.find(item =>
-            item.name === product.name
-        );
+function addCartItem(name, price) {
+    const firstItem = cart.length === 0;
+    const existingItem = cart.find(item => item.name === name);
 
     if (existingItem) {
-
         existingItem.quantity += 1;
-
     } else {
-
         cart.push({
-            name: product.name,
-            price: product.price,
+            name,
+            price,
             quantity: 1
         });
-
     }
 
     updateCart();
@@ -267,64 +234,66 @@ function addToCart(productName) {
     showToast("Produto adicionado ao carrinho 🍺");
 
     if (firstItem) {
-
         openCart();
+    }
+}
 
+function addToCart(productName) {
+    const product = products.find(item => item.name === productName);
+
+    if (!product || !product.available) {
+        return;
     }
 
+    addCartItem(product.name, product.price);
 }
 
 function increaseQuantity(index) {
-
     cart[index].quantity += 1;
-
     updateCart();
-
 }
 
 function decreaseQuantity(index) {
-
     if (cart[index].quantity > 1) {
-
         cart[index].quantity -= 1;
-
     } else {
-
         cart.splice(index, 1);
-
     }
 
     updateCart();
-
 }
 
 function removeItem(index) {
-
     cart.splice(index, 1);
+    updateCart();
+}
+
+function clearCart() {
+    cart = [];
 
     updateCart();
 
+    localStorage.removeItem("adega-cart");
+}
+
+function clearCheckoutFields() {
+    document.getElementById("nome").value = "";
+    document.getElementById("endereco").value = "";
+    document.getElementById("pagamento").value = "";
+    document.getElementById("observacao").value = "";
 }
 
 function updateCart() {
-
-    const cartItems =
-        document.getElementById("cart-items");
-
-    const cartTotal =
-        document.getElementById("cart-total");
-
-    const cartCount =
-        document.getElementById("cart-count");
+    const cartItems = document.getElementById("cart-items");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCount = document.getElementById("cart-count");
 
     cartItems.innerHTML = "";
 
     let total = 0;
-
     let totalItems = 0;
 
     if (cart.length === 0) {
-
         cartItems.innerHTML = `
             <p style="
                 color:#999;
@@ -334,35 +303,23 @@ function updateCart() {
                 Seu carrinho está vazio.
             </p>
         `;
-
     }
 
     cart.forEach((item, index) => {
-
-        const subtotal =
-            item.price * item.quantity;
+        const subtotal = item.price * item.quantity;
 
         total += subtotal;
-
         totalItems += item.quantity;
 
         cartItems.innerHTML += `
-
             <div class="cart-item">
-
                 <div>
-
                     <strong>${item.name}</strong>
-
                     <br>
-
                     <small>
-                        R$ ${formatPrice(item.price)}
-                        x ${item.quantity}
+                        R$ ${formatPrice(item.price)} x ${item.quantity}
                     </small>
-
                     <br>
-
                     <strong>
                         R$ ${formatPrice(subtotal)}
                     </strong>
@@ -373,152 +330,145 @@ function updateCart() {
                         gap:8px;
                         align-items:center;
                     ">
-
-                        <button
-                            class="remove-btn"
-                            onclick="decreaseQuantity(${index})">
-
-                            -
-
-                        </button>
-
+                        <button class="remove-btn" onclick="decreaseQuantity(${index})">-</button>
                         <span>${item.quantity}</span>
-
-                        <button
-                            class="remove-btn"
-                            onclick="increaseQuantity(${index})">
-
-                            +
-
-                        </button>
-
+                        <button class="remove-btn" onclick="increaseQuantity(${index})">+</button>
                     </div>
-
                 </div>
 
-                <button
-                    class="remove-btn"
-                    onclick="removeItem(${index})">
-
+                <button class="remove-btn" onclick="removeItem(${index})">
                     ✕
-
                 </button>
-
             </div>
-
         `;
-
     });
 
-    cartTotal.innerText =
-        formatPrice(total);
+    cartTotal.innerText = formatPrice(total);
+    cartCount.innerText = totalItems;
 
-    cartCount.innerText =
-        totalItems;
-
+    saveCart();
 }
 
-function sendWhatsApp() {
+function updateStoreStatus() {
+    const now = new Date();
+    const hour = now.getHours();
 
-    if (cart.length <= 0) {
+    const isOpen = hour >= 18 || hour < 2;
 
-        showToast("Seu carrinho está vazio.");
+    const statusHome = document.getElementById("status-text-home");
+    const homeBox = document.getElementById("status-box-home");
 
+    if (!statusHome || !homeBox) {
         return;
-
     }
 
-    const nome =
-        document.getElementById("nome");
+    if (isOpen) {
+        statusHome.innerText = "Aberto agora";
+        homeBox.classList.remove("closed");
+    } else {
+        statusHome.innerText = "Fechado no momento";
+        homeBox.classList.add("closed");
+    }
+}
 
-    const endereco =
-        document.getElementById("endereco");
+function validateOrder() {
+    if (cart.length <= 0) {
+        showToast("Seu carrinho está vazio.");
+        return false;
+    }
 
-    const pagamento =
-        document.getElementById("pagamento");
-
-    const observacao =
-        document.getElementById("observacao");
+    const nome = document.getElementById("nome");
+    const endereco = document.getElementById("endereco");
+    const pagamento = document.getElementById("pagamento");
 
     if (nome.value.trim() === "") {
-
         showToast("Informe seu nome.");
-
         nome.focus();
-
-        return;
-
+        return false;
     }
 
     if (endereco.value.trim() === "") {
-
         showToast("Informe seu endereço.");
-
         endereco.focus();
-
-        return;
-
+        return false;
     }
 
     if (pagamento.value === "") {
-
         showToast("Selecione a forma de pagamento.");
-
         pagamento.focus();
-
-        return;
-
+        return false;
     }
 
+    return true;
+}
+
+function createOrderMessage(encoded = true) {
     let total = 0;
 
-    let message =
-        `🍺 *NOVO PEDIDO - ADEGA DO VIZINHO* %0A%0A`;
+    const nome = document.getElementById("nome").value.trim();
+    const endereco = document.getElementById("endereco").value.trim();
+    const pagamento = document.getElementById("pagamento").value;
+    const observacao = document.getElementById("observacao").value.trim();
 
-    message +=
-        `👤 *Nome:* ${nome.value}%0A`;
+    let message = `🍺 *NOVO PEDIDO - ADEGA DO VIZINHO*\n\n`;
 
-    message +=
-        `📍 *Endereço:* ${endereco.value}%0A`;
-
-    message +=
-        `💳 *Pagamento:* ${pagamento.value}%0A%0A`;
-
-    message +=
-        `🛒 *Itens do pedido:* %0A`;
+    message += `👤 *Nome:* ${nome}\n`;
+    message += `📍 *Endereço:* ${endereco}\n`;
+    message += `💳 *Pagamento:* ${pagamento}\n\n`;
+    message += `🛒 *Itens do pedido:*\n`;
 
     cart.forEach(item => {
-
-        const subtotal =
-            item.price * item.quantity;
+        const subtotal = item.price * item.quantity;
 
         total += subtotal;
 
-        message +=
-            `- ${item.quantity}x ${item.name} | R$ ${formatPrice(subtotal)}%0A`;
-
+        message += `- ${item.quantity}x ${item.name} | R$ ${formatPrice(subtotal)}\n`;
     });
 
-    message +=
-        `%0A💰 *Total:* R$ ${formatPrice(total)}%0A`;
+    message += `\n💰 *Total:* R$ ${formatPrice(total)}\n`;
 
-    if (observacao.value.trim() !== "") {
-
-        message +=
-            `%0A📝 *Observação:* ${observacao.value}%0A`;
-
+    if (observacao !== "") {
+        message += `\n📝 *Observação:* ${observacao}\n`;
     }
 
-    const phone =
-        "5511917742509";
+    return encoded ? encodeURIComponent(message) : message;
+}
 
-    const url =
-        `https://wa.me/${phone}?text=${message}`;
+function sendOrder() {
+    if (!validateOrder()) {
+        return;
+    }
+
+    const phone = "5511917742509";
+    const message = createOrderMessage(true);
+    const url = `https://wa.me/${phone}?text=${message}`;
 
     window.open(url, "_blank");
 
+    clearCart();
+    clearCheckoutFields();
+    closeCart();
+
+    showToast("Pedido enviado com sucesso 🍺");
 }
 
-renderProducts();
+function revealOnScroll() {
+    const reveals = document.querySelectorAll(".reveal");
 
+    reveals.forEach(item => {
+        const windowHeight = window.innerHeight;
+        const elementTop = item.getBoundingClientRect().top;
+        const elementVisible = 100;
+
+        if (elementTop < windowHeight - elementVisible) {
+            item.classList.add("active");
+        }
+    });
+}
+
+window.addEventListener("scroll", revealOnScroll);
+
+renderProducts();
 updateCart();
+updateStoreStatus();
+revealOnScroll();
