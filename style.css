@@ -325,7 +325,7 @@ nav a:hover {
     font-weight: 800;
 }
 
-.status-box > span {
+.status-box>span {
     width: 10px;
     height: 10px;
     background: var(--green);
@@ -347,7 +347,7 @@ nav a:hover {
     color: #ff9b9b !important;
 }
 
-.closed > span {
+.closed>span {
     background: var(--red) !important;
     box-shadow: 0 0 20px var(--red) !important;
 }
