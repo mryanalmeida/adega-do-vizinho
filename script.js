@@ -89,6 +89,8 @@ const OPENING_HOURS = [
 // ==========================================
 
 let cart = loadCart();
+let cartOpenedAfterFirstAdd = false;
+
 // ==========================================
 // FUNÇÕES AUXILIARES
 // ==========================================
@@ -409,6 +411,8 @@ function addToCart(productName) {
         return;
     }
 
+    const cartWasEmpty = cart.length === 0;
+
     const existingItem = cart.find(item => item.name === product.name);
 
     if (existingItem) {
@@ -423,6 +427,10 @@ function addToCart(productName) {
 
     updateCart();
     showToast("Produto adicionado 🍺");
+
+    if (cartWasEmpty) {
+        openCart();
+    }
 }
 
 function increaseQuantity(index) {
