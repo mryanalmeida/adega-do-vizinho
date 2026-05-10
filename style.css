@@ -1,12 +1,21 @@
+/* ========================================== */
+/* RESET GERAL */
+/* ========================================== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Rolagem suave ao clicar nos links */
 html {
     scroll-behavior: smooth;
 }
+
+/* ========================================== */
+/* VARIÁVEIS DE CORES */
+/* ========================================== */
 
 :root {
     --gold: #f7b731;
@@ -20,6 +29,10 @@ html {
     --green: #25D366;
     --red: #ff3b3b;
 }
+
+/* ========================================== */
+/* BODY / FUNDO DO SITE */
+/* ========================================== */
 
 body {
     font-family: Poppins, sans-serif;
@@ -35,6 +48,7 @@ main {
     overflow: hidden;
 }
 
+/* Mantém a mesma fonte nos elementos */
 button,
 a,
 input,
@@ -47,6 +61,7 @@ button {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* Destaque ao navegar pelo teclado */
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
@@ -56,7 +71,9 @@ textarea:focus-visible {
     outline-offset: 3px;
 }
 
+/* ========================================== */
 /* HEADER */
+/* ========================================== */
 
 header {
     position: fixed;
@@ -72,16 +89,15 @@ header {
     gap: 18px;
 
     padding: 12px;
-
     border: 1px solid var(--line);
     border-radius: 28px;
 
     background: rgba(5, 5, 5, .78);
     backdrop-filter: blur(18px);
-
     box-shadow: 0 20px 70px rgba(0, 0, 0, .55);
 }
 
+/* Logo do topo */
 .logo {
     display: flex;
     align-items: center;
@@ -109,6 +125,7 @@ header {
     color: var(--muted);
 }
 
+/* Menu do topo */
 nav {
     justify-self: end;
     display: flex;
@@ -126,6 +143,7 @@ nav a:hover {
     color: var(--gold);
 }
 
+/* Botão hambúrguer */
 .menu-btn {
     display: none;
     border: 1px solid var(--line);
@@ -138,7 +156,9 @@ nav a:hover {
     cursor: pointer;
 }
 
-/* BUTTONS */
+/* ========================================== */
+/* BOTÕES */
+/* ========================================== */
 
 .cart-btn,
 .catalog-btn,
@@ -176,7 +196,9 @@ nav a:hover {
     transform: translateY(-5px);
 }
 
+/* ========================================== */
 /* HOME */
+/* ========================================== */
 
 .home-page {
     min-height: 100vh;
@@ -200,6 +222,7 @@ nav a:hover {
     align-items: center;
 }
 
+/* Tags pequenas douradas */
 .tag,
 .small-title,
 .section-title span {
@@ -214,6 +237,7 @@ nav a:hover {
     font-weight: 700;
 }
 
+/* Título principal */
 .home-text h1 {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(70px, 10vw, 145px);
@@ -254,7 +278,9 @@ nav a:hover {
     border: 1px solid var(--line);
 }
 
-/* HERO */
+/* ========================================== */
+/* HERO CARD */
+/* ========================================== */
 
 .hero-panel {
     display: grid;
@@ -310,7 +336,9 @@ nav a:hover {
     line-height: 1.7;
 }
 
-/* STATUS */
+/* ========================================== */
+/* STATUS ABERTO / FECHADO */
+/* ========================================== */
 
 .status-box {
     margin-top: 22px;
@@ -352,7 +380,9 @@ nav a:hover {
     box-shadow: 0 0 20px var(--red) !important;
 }
 
+/* ========================================== */
 /* MINI INFO */
+/* ========================================== */
 
 .mini-info {
     display: grid;
@@ -376,7 +406,9 @@ nav a:hover {
     font-size: 13px;
 }
 
-/* ABOUT */
+/* ========================================== */
+/* SOBRE */
+/* ========================================== */
 
 .about-section {
     padding: 90px 6% 30px;
@@ -428,7 +460,9 @@ footer strong {
     color: var(--muted);
 }
 
-/* TITLES */
+/* ========================================== */
+/* TÍTULOS DAS SEÇÕES */
+/* ========================================== */
 
 .categories,
 .catalog-section {
@@ -447,7 +481,9 @@ footer strong {
     letter-spacing: 1px;
 }
 
-/* CATEGORIES */
+/* ========================================== */
+/* CATEGORIAS */
+/* ========================================== */
 
 .category-grid {
     display: grid;
@@ -483,7 +519,9 @@ footer strong {
     color: #fff;
 }
 
-/* PRODUCTS */
+/* ========================================== */
+/* PRODUTOS */
+/* ========================================== */
 
 .products {
     display: grid;
@@ -552,7 +590,9 @@ footer strong {
     cursor: not-allowed;
 }
 
+/* ========================================== */
 /* CARRINHO */
+/* ========================================== */
 
 .cart-overlay {
     position: fixed;
@@ -624,7 +664,9 @@ footer strong {
     align-items: center;
 }
 
-/* REMOVE */
+/* ========================================== */
+/* BOTÕES DE FECHAR / REMOVER */
+/* ========================================== */
 
 .close-btn,
 .remove-btn {
@@ -652,7 +694,9 @@ footer strong {
     color: #fff;
 }
 
-/* TOTAL */
+/* ========================================== */
+/* TOTAL DO CARRINHO */
+/* ========================================== */
 
 .total {
     margin-top: 24px;
@@ -664,7 +708,9 @@ footer strong {
     font-weight: 900;
 }
 
-/* FORM */
+/* ========================================== */
+/* FORMULÁRIO DO CARRINHO */
+/* ========================================== */
 
 .checkout {
     margin-top: 24px;
@@ -699,14 +745,14 @@ footer strong {
     color: #000;
 }
 
-/* ENVIAR */
-
 .send-options {
     display: grid;
     gap: 10px;
 }
 
-/* TOAST */
+/* ========================================== */
+/* TOAST / MENSAGEM NA TELA */
+/* ========================================== */
 
 .toast-message {
     position: fixed;
@@ -729,7 +775,9 @@ footer strong {
     transform: translateX(-50%) translateY(0);
 }
 
-/* WHATS FLOAT */
+/* ========================================== */
+/* WHATSAPP FLUTUANTE */
+/* ========================================== */
 
 .floating-whatsapp {
     position: fixed;
@@ -753,7 +801,9 @@ footer strong {
     transform: scale(1.08);
 }
 
-/* REVEAL */
+/* ========================================== */
+/* ANIMAÇÃO AO ROLAR */
+/* ========================================== */
 
 .reveal {
     opacity: 0;
@@ -766,6 +816,7 @@ footer strong {
     transform: translateY(0);
 }
 
+/* Mensagem quando não há produtos */
 .empty-products {
     grid-column: 1/-1;
     text-align: center;
@@ -773,7 +824,9 @@ footer strong {
     padding: 40px;
 }
 
+/* ========================================== */
 /* FOOTER */
+/* ========================================== */
 
 footer {
     padding: 45px 20px;
@@ -787,10 +840,11 @@ footer strong {
     font-size: 22px;
 }
 
-/* RESPONSIVO */
+/* ========================================== */
+/* RESPONSIVO TABLET */
+/* ========================================== */
 
 @media(max-width:1100px) {
-
     header {
         grid-template-columns: auto 1fr auto auto;
     }
@@ -848,8 +902,11 @@ footer strong {
     }
 }
 
-@media(max-width:768px) {
+/* ========================================== */
+/* RESPONSIVO CELULAR */
+/* ========================================== */
 
+@media(max-width:768px) {
     body {
         background-attachment: scroll;
     }
@@ -917,8 +974,11 @@ footer strong {
     }
 }
 
-@media(max-width:480px) {
+/* ========================================== */
+/* RESPONSIVO CELULAR PEQUENO */
+/* ========================================== */
 
+@media(max-width:480px) {
     header {
         grid-template-columns: auto 1fr auto auto;
         padding: 10px;
@@ -971,6 +1031,11 @@ footer strong {
         padding: 24px 18px;
     }
 }
+
+/* ========================================== */
+/* ACESSIBILIDADE */
+/* ========================================== */
+/* Remove animações para quem prefere menos movimento */
 
 @media(prefers-reduced-motion: reduce) {
     * {
