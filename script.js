@@ -22,7 +22,7 @@ const products = [
     {
         category: "Copão",
         name: "Copão de Red Label Básico",
-        description: "Copão de 700ml com Whisky + Energetico Vibe + Gelo de coco.",
+        description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
         topics: [
             "Mais sabores de gelo disponíveis",
             "Consulte opções de energético",
@@ -50,7 +50,7 @@ const products = [
     {
         category: "Copão",
         name: "Copão de Jack Daniels Básico",
-        description: "Copão de 700ml com Whisky + Energetico Vibe + Gelo de coco.",
+        description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
         topics: [
             "Mais sabores de gelo disponíveis",
             "Consulte opções de energético",
@@ -74,13 +74,13 @@ const WHATSAPP_PHONE = "5511917742509";
 // Configure aqui o horário de funcionamento.
 // day: 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
 const OPENING_HOURS = [
-    { day: 0, open: "11:00", close: "02:00" }, // DOMINGO - FEIRA
-    { day: 1, open: "11:00", close: "00:00" }, // SEGUNDA - FEIRA
-    { day: 2, open: "11:00", close: "00:00" }, // TERÇA - FEIRA
-    { day: 3, open: "11:00", close: "00:00" }, // QUARTA - FEIRA
-    { day: 4, open: "11:00", close: "02:00" }, // QUINTA - FEIRA
-    { day: 5, open: "11:00", close: "02:00" }, // SEXTA - FEIRA
-    { day: 6, open: "11:00", close: "02:00" }  // SABADO - FEIRA
+    { day: 0, open: "11:00", close: "02:00" }, // DOMINGO
+    { day: 1, open: "11:00", close: "00:00" }, // SEGUNDA-FEIRA
+    { day: 2, open: "11:00", close: "00:00" }, // TERÇA-FEIRA
+    { day: 3, open: "11:00", close: "00:00" }, // QUARTA-FEIRA
+    { day: 4, open: "11:00", close: "02:00" }, // QUINTA-FEIRA
+    { day: 5, open: "11:00", close: "02:00" }, // SEXTA-FEIRA
+    { day: 6, open: "11:00", close: "02:00" }  // SÁBADO
 ];
 
 
@@ -89,9 +89,6 @@ const OPENING_HOURS = [
 // ==========================================
 
 let cart = loadCart();
-let currentCategory = null;
-
-
 // ==========================================
 // FUNÇÕES AUXILIARES
 // ==========================================
@@ -202,47 +199,59 @@ function timeToMinutes(time) {
     return hours * 60 + minutes;
 }
 
+function getScheduleForDay(day) {
+    return OPENING_HOURS.find(item => item.day === day);
+}
+
+function createStatus(open, text, detail) {
+    return { open, text, detail };
+}
+
 function getStoreStatus() {
     const now = new Date();
     const currentDay = now.getDay();
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-    const todaySchedule = OPENING_HOURS.find(item => item.day === currentDay);
+    const todaySchedule = getScheduleForDay(currentDay);
+    const previousDay = currentDay === 0 ? 6 : currentDay - 1;
+    const previousSchedule = getScheduleForDay(previousDay);
+
+    // Verifica primeiro se ainda estamos dentro do horário do dia anterior,
+    // exemplo: domingo 11:00 até segunda 02:00.
+    if (previousSchedule) {
+        const previousOpen = timeToMinutes(previousSchedule.open);
+        const previousClose = timeToMinutes(previousSchedule.close);
+        const previousGoesOvernight = previousClose <= previousOpen;
+
+        if (previousGoesOvernight && currentMinutes < previousClose) {
+            return createStatus(true, "Estamos abertos", `Atendimento até ${previousSchedule.close}`);
+        }
+    }
 
     if (!todaySchedule) {
-        return {
-            open: false,
-            text: "Estamos fechados",
-            detail: "Confira nosso horário pelo WhatsApp"
-        };
+        return createStatus(false, "Estamos fechados", "Confira nosso horário pelo WhatsApp");
     }
 
     const openMinutes = timeToMinutes(todaySchedule.open);
     const closeMinutes = timeToMinutes(todaySchedule.close);
+    const goesOvernight = closeMinutes <= openMinutes;
 
-    // Horário normal, abre e fecha no mesmo dia.
-    if (closeMinutes > openMinutes) {
-        const isOpen = currentMinutes >= openMinutes && currentMinutes < closeMinutes;
-
-        return {
-            open: isOpen,
-            text: isOpen ? "Estamos abertos" : "Estamos fechados",
-            detail: isOpen
-                ? `Atendimento até ${todaySchedule.close}`
-                : `Abrimos às ${todaySchedule.open}`
-        };
+    if (goesOvernight) {
+        const isOpen = currentMinutes >= openMinutes;
+        return createStatus(
+            isOpen,
+            isOpen ? "Estamos abertos" : "Estamos fechados",
+            isOpen ? `Atendimento até ${todaySchedule.close}` : `Abrimos às ${todaySchedule.open}`
+        );
     }
 
-    // Horário que passa da meia-noite, exemplo: 18:00 até 02:00.
-    const isOpenOvernight = currentMinutes >= openMinutes || currentMinutes < closeMinutes;
+    const isOpen = currentMinutes >= openMinutes && currentMinutes < closeMinutes;
 
-    return {
-        open: isOpenOvernight,
-        text: isOpenOvernight ? "Estamos abertos" : "Estamos fechados",
-        detail: isOpenOvernight
-            ? `Atendimento até ${todaySchedule.close}`
-            : `Abrimos às ${todaySchedule.open}`
-    };
+    return createStatus(
+        isOpen,
+        isOpen ? "Estamos abertos" : "Estamos fechados",
+        isOpen ? `Atendimento até ${todaySchedule.close}` : `Abrimos às ${todaySchedule.open}`
+    );
 }
 
 function updateStoreStatus() {
@@ -317,11 +326,11 @@ function renderProducts(category = null) {
                     <div class="price">R$ ${formatPrice(product.price)}</div>
 
                     ${isAvailable ? `
-                        <button class="add-btn" onclick="addToCart('${safeName}')">
+                        <button type="button" class="add-btn" onclick="addToCart('${encodeURIComponent(product.name)}')">
                             Adicionar
                         </button>
                     ` : `
-                        <button class="out-btn" disabled>
+                        <button type="button" class="out-btn" disabled>
                             Indisponível
                         </button>
                     `}
@@ -334,7 +343,6 @@ function renderProducts(category = null) {
 }
 
 function filterProducts(category) {
-    currentCategory = category;
     renderProducts(category);
 
     const productsContainer = getElement("products-container");
@@ -359,6 +367,7 @@ function openCart() {
         return;
     }
 
+    updateCart();
     cartElement.classList.add("active");
     overlay.classList.add("active");
     document.body.style.overflow = "hidden";
@@ -392,7 +401,8 @@ function toggleCart() {
 }
 
 function addToCart(productName) {
-    const product = products.find(item => item.name === productName);
+    const decodedName = decodeURIComponent(productName);
+    const product = products.find(item => item.name === decodedName);
 
     if (!product || product.available === false) {
         showToast("Produto indisponível.");
@@ -624,9 +634,12 @@ function sendOrder() {
 function revealOnScroll() {
     const reveals = document.querySelectorAll(".reveal");
 
-    reveals.forEach(item => {
+    reveals.forEach((item, index) => {
         const windowHeight = window.innerHeight;
         const elementTop = item.getBoundingClientRect().top;
+
+        // Cria um efeito em sequência, deixando os elementos entrarem de forma mais premium.
+        item.style.setProperty("--reveal-delay", `${Math.min(index * 55, 330)}ms`);
 
         if (elementTop < windowHeight - 100) {
             item.classList.add("active");
@@ -664,8 +677,22 @@ document.addEventListener("DOMContentLoaded", () => {
     renderProducts();
     updateCart();
     updateStoreStatus();
+    updateFooterYear();
     revealOnScroll();
 });
 
 // Atualiza o status aberto/fechado a cada minuto.
 setInterval(updateStoreStatus, 60000);
+
+
+// ==========================================
+// ANO AUTOMÁTICO DO FOOTER
+// ==========================================
+
+function updateFooterYear() {
+    const footerYear = getElement("footer-year");
+
+    if (footerYear) {
+        footerYear.innerText = new Date().getFullYear();
+    }
+}

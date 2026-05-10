@@ -13,7 +13,7 @@
         content="Adega do Vizinho: peça copões, bebidas geladas, energéticos, cervejas e combos direto pelo WhatsApp.">
     <!-- Palavras-chave relacionadas ao site -->
     <meta name="keywords"
-        content="adega, adega do vizinho, bebidas, cFopão, whisky, energético, cerveja, delivery de bebidas">
+        content="adega, adega do vizinho, bebidas, copão, whisky, energético, cerveja, delivery de bebidas">
     <!-- Cor do tema em navegadores mobile -->
     <meta name="theme-color" content="#050505">
     <!-- Informações usadas quando o link do site é compartilhado -->
@@ -59,13 +59,13 @@
         </nav>
         <!-- Botão do menu mobile/hambúrguer -->
         <!-- No celular, ele abre e fecha o menu -->
-        <button class="menu-btn" id="menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menu"
+        <button type="button" class="menu-btn" id="menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menu"
             aria-expanded="false">
             ☰
         </button>
         <!-- Botão que abre o carrinho -->
         <!-- O span cart-count mostra a quantidade de itens no carrinho -->
-        <button class="cart-btn" onclick="toggleCart()" aria-label="Abrir carrinho">
+        <button type="button" class="cart-btn" onclick="toggleCart()" aria-label="Abrir carrinho">
             🛒 <span id="cart-count">0</span>
         </button>
     </header>
@@ -150,6 +150,22 @@
                     A Adega do Vizinho foi criada para facilitar seu pedido. Você escolhe os produtos,
                     adiciona no carrinho e envia tudo direto pelo WhatsApp de forma rápida e simples.
                 </p>
+                <div class="about-highlights">
+                    <div>
+                        <strong>🍹 Copões</strong>
+                        <span>Montados na hora</span>
+                    </div>
+
+                    <div>
+                        <strong>⚡ Pedido rápido</strong>
+                        <span>Direto pelo WhatsApp</span>
+                    </div>
+
+                    <div>
+                        <strong>❄️ Bebidas geladas</strong>
+                        <span>Prontas para o rolê</span>
+                    </div>
+                </div>
             </div>
 
             <!-- Cards de contato e informações -->
@@ -165,10 +181,19 @@
                     <span>(11) 91774-2509</span>
                 </a>
                 <!-- Card explicando como pedir -->
-                <div class="info-card">
+                <a href="#categorias" class="info-card how-to-card">
                     <strong>Como pedir</strong>
-                    <span>Escolha, adicione e envie</span>
-                </div>
+
+                    <div class="steps">
+                        <span>1. Escolha os produtos</span>
+                        <span>2. Adicione ao carrinho</span>
+                        <span>3. Envie no WhatsApp</span>
+                    </div>
+
+                    <div class="catalog-link">
+                        Ver catálogo →
+                    </div>
+                </a>
             </div>
         </section>
 
@@ -183,27 +208,27 @@
             </div>
             <div class="category-grid">
                 <!-- Filtra produtos da categoria Copão -->
-                <button class="category-card" onclick="filterProducts('Copão')">
+                <button type="button" class="category-card" onclick="filterProducts('Copão')">
                     <div>🍹</div>
                     <span>Copão</span>
                 </button>
                 <!-- Filtra produtos da categoria Energético -->
-                <button class="category-card" onclick="filterProducts('Energético')">
+                <button type="button" class="category-card" onclick="filterProducts('Energético')">
                     <div>⚡</div>
                     <span>Energético</span>
                 </button>
                 <!-- Filtra produtos da categoria Gelo de Sabor -->
-                <button class="category-card" onclick="filterProducts('Gelo de Sabor')">
+                <button type="button" class="category-card" onclick="filterProducts('Gelo de Sabor')">
                     <div>❄️</div>
                     <span>Gelo de Sabor</span>
                 </button>
                 <!-- Filtra produtos da categoria Cerveja -->
-                <button class="category-card" onclick="filterProducts('Cerveja')">
+                <button type="button" class="category-card" onclick="filterProducts('Cerveja')">
                     <div>🍺</div>
                     <span>Cerveja</span>
                 </button>
                 <!-- Filtra produtos da categoria Combos -->
-                <button class="category-card" onclick="filterProducts('Combos')">
+                <button type="button" class="category-card" onclick="filterProducts('Combos')">
                     <div>🔥</div>
                     <span>Combos</span>
                 </button>
@@ -245,7 +270,7 @@
             </div>
 
             <!-- Botão para fechar o carrinho -->
-            <button class="close-btn" onclick="closeCart()" aria-label="Fechar carrinho">✕</button>
+            <button type="button" class="close-btn" onclick="closeCart()" aria-label="Fechar carrinho">✕</button>
         </div>
 
         <!-- Aqui aparecem os produtos adicionados ao carrinho -->
@@ -281,7 +306,7 @@
 
             <!-- Botão que envia o pedido para o WhatsApp -->
             <div class="send-options">
-                <button class="send-btn" onclick="sendOrder()">
+                <button type="button" class="send-btn" onclick="sendOrder()">
                     Enviar Pedido no WhatsApp
                 </button>
             </div>
@@ -291,6 +316,7 @@
     <!-- ========================================== -->
     <!-- BOTÃO FLUTUANTE DO WHATSAPP -->
     <!-- ========================================== -->
+
     <a href="https://wa.me/5511917742509" target="_blank" rel="noopener" class="floating-whatsapp"
         aria-label="Falar no WhatsApp">
         💬
@@ -299,13 +325,24 @@
     <!-- ========================================== -->
     <!-- RODAPÉ -->
     <!-- ========================================== -->
-    <footer>
-        <strong>Adega do Vizinho</strong>
-        <p>© 2026 • Todos os direitos reservados</p>
-    </footer>
 
-    <!-- Liga o arquivo JavaScript ao HTML -->
-    <!-- Esse script precisa ficar no final para carregar depois do HTML -->
+    <footer class="footer-bar">
+
+        <div class="footer-info">
+            <strong>Adega do Vizinho</strong>
+
+            <small>
+                © <span id="footer-year"></span> • Todos os direitos reservados
+            </small>
+        </div>
+
+        <div class="footer-age">
+            <img src="img/18+.png" alt="Proibido para menores de 18 anos">
+        </div>
+
+    </footer>
+    
+
     <script src="script.js"></script>
 </body>
 
