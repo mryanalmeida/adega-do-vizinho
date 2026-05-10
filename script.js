@@ -1,17 +1,16 @@
 // ==========================================
-// ARRAY DE PRODUTOS
+// PRODUTOS DA LOJA
 // ==========================================
-// Aqui ficam todos os produtos da loja.
-// Cada objeto representa um produto do site.
+// Cada objeto representa um produto exibido no catálogo.
 
 const products = [
     {
-        category: "Copão", // Categoria do produto
-        name: "Copão de Red Label Premium", // Nome
-        description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.", // Descrição
-        price: 30, // Preço
-        image: "img/Produtos/red-premium.png", // Caminho da imagem
-        available: true // Se está disponível para venda
+        category: "Copão",
+        name: "Copão de Red Label Premium",
+        description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
+        price: 30,
+        image: "img/Produtos/red-premium.png",
+        available: true
     }
 ];
 
@@ -20,118 +19,68 @@ const products = [
 // CONFIGURAÇÕES GERAIS
 // ==========================================
 
-// Nome usado para salvar o carrinho no navegador
 const CART_KEY = "adega-cart";
-
-// Número do WhatsApp que recebe os pedidos
 const WHATSAPP_PHONE = "5511917742509";
+
+// Configure aqui o horário de funcionamento.
+// day: 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
+const OPENING_HOURS = [
+    { day: 0, open: "11:00", close: "02:00" }, // DOMINGO
+    { day: 1, open: "11:00", close: "00:00" }, // SEGUNDA
+    { day: 2, open: "11:00", close: "00:00" }, // TERÇA
+    { day: 3, open: "11:00", close: "00:00" }, // QUARTA
+    { day: 4, open: "11:00", close: "02:00" }, // QUINTA
+    { day: 5, open: "11:00", close: "02:00" }, // SEXTA
+    { day: 6, open: "11:00", close: "02:00" }  // SABADO
+];
 
 
 // ==========================================
 // VARIÁVEIS PRINCIPAIS
 // ==========================================
 
-// Carrega o carrinho salvo anteriormente
 let cart = loadCart();
-
-// Guarda a categoria atual selecionada
 let currentCategory = null;
 
 
 // ==========================================
-// CARREGAR CARRINHO
+// FUNÇÕES AUXILIARES
 // ==========================================
-// Pega os dados salvos no localStorage do navegador
+
+function getElement(id) {
+    return document.getElementById(id);
+}
 
 function loadCart() {
-
     try {
+        const savedCart = JSON.parse(localStorage.getItem(CART_KEY));
 
-        // Tenta pegar o carrinho salvo
-        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        if (!Array.isArray(savedCart)) {
+            return [];
+        }
 
+        // Filtra itens inválidos para evitar erro no carrinho.
+        return savedCart.filter(item =>
+            item &&
+            typeof item.name === "string" &&
+            Number(item.price) >= 0 &&
+            Number(item.quantity) > 0
+        );
     } catch {
-
-        // Se der erro retorna carrinho vazio
         return [];
     }
 }
 
-
-// ==========================================
-// SALVAR CARRINHO
-// ==========================================
-// Salva o carrinho atual no navegador
-
 function saveCart() {
-
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
-
-// ==========================================
-// TOAST / MENSAGEM PEQUENA
-// ==========================================
-// Mostra mensagens rápidas na tela
-
-function showToast(message) {
-
-    // Procura toast antigo
-    const existingToast = document.querySelector(".toast-message");
-
-    // Remove toast antigo
-    if (existingToast) {
-        existingToast.remove();
-    }
-
-    // Cria nova div
-    const toast = document.createElement("div");
-
-    // Adiciona classe CSS
-    toast.className = "toast-message";
-
-    // Texto da mensagem
-    toast.innerText = message;
-
-    // Coloca no body
-    document.body.appendChild(toast);
-
-    // Faz animação aparecer
-    setTimeout(() => toast.classList.add("show"), 100);
-
-    // Remove depois de 2.5 segundos
-    setTimeout(() => {
-
-        toast.classList.remove("show");
-
-        setTimeout(() => toast.remove(), 300);
-
-    }, 2500);
-}
-
-
-// ==========================================
-// FORMATAR PREÇO
-// ==========================================
-// Converte número para formato brasileiro
-
 function formatPrice(value) {
-
-    return Number(value)
-        .toFixed(2)
-        .replace(".", ",");
+    return Number(value || 0).toFixed(2).replace(".", ",");
 }
-
-
-// ==========================================
-// PROTEGER HTML
-// ==========================================
-// Evita códigos maliciosos no HTML
 
 function escapeHTML(value) {
-
     return String(value)
-
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
@@ -139,397 +88,473 @@ function escapeHTML(value) {
         .replaceAll("'", "&#039;");
 }
 
+function showToast(message) {
+    const oldToast = document.querySelector(".toast-message");
 
-// ==========================================
-// MOSTRAR PRODUTOS NA TELA
-// ==========================================
-
-function renderProducts(category = null) {
-
-    // Container dos produtos
-    const container = document.getElementById("products-container");
-
-    // Título da categoria
-    const categoryTitle = document.getElementById("category-title");
-
-    // Se não existir para execução
-    if (!container || !categoryTitle) {
-        return;
+    if (oldToast) {
+        oldToast.remove();
     }
 
-    // Começa com todos os produtos
-    let filteredProducts = products;
+    const toast = document.createElement("div");
+    toast.className = "toast-message";
+    toast.innerText = message;
+    document.body.appendChild(toast);
 
-    // Se escolheu categoria filtra
-    if (category) {
+    setTimeout(() => toast.classList.add("show"), 50);
 
-        filteredProducts = products.filter(
-            product => product.category === category
-        );
-
-        categoryTitle.innerText = category;
-
-    } else {
-
-        categoryTitle.innerText = "Produtos";
-    }
-
-    // Se não tiver produto
-    if (filteredProducts.length === 0) {
-
-        container.innerHTML = `
-            <div class="empty-products">
-                Nenhum produto encontrado.
-            </div>
-        `;
-
-        return;
-    }
-
-    // Cria HTML dos produtos
-    const productsHTML = filteredProducts.map(product => {
-
-        // Proteção HTML
-        const safeName = escapeHTML(product.name);
-
-        return `
-            <div class="card reveal">
-
-                <img src="${product.image}">
-
-                <div class="card-content">
-
-                    <h4>${safeName}</h4>
-
-                    <div class="price">
-                        R$ ${formatPrice(product.price)}
-                    </div>
-
-                    <button 
-                        class="add-btn"
-                        onclick="addToCart('${safeName}')"
-                    >
-                        Adicionar
-                    </button>
-
-                </div>
-            </div>
-        `;
-
-    }).join("");
-
-    // Coloca HTML na tela
-    container.innerHTML = productsHTML;
-
-    // Ativa animação
-    revealOnScroll();
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
 }
 
 
 // ==========================================
-// FILTRAR PRODUTOS
+// MENU MOBILE
 // ==========================================
+// Essas funções corrigem o botão hambúrguer do celular.
 
-function filterProducts(category) {
+function toggleMobileMenu() {
+    const navMenu = getElement("nav-menu");
+    const menuBtn = getElement("menu-btn");
 
-    // Salva categoria atual
-    currentCategory = category;
-
-    // Renderiza produtos filtrados
-    renderProducts(category);
-
-    // Pega container
-    const productsContainer =
-        document.getElementById("products-container");
-
-    // Faz rolagem suave
-    if (productsContainer) {
-
-        productsContainer.scrollIntoView({
-            behavior: "smooth"
-        });
+    if (!navMenu || !menuBtn) {
+        return;
     }
 
-    // Fecha menu mobile
+    const isOpen = navMenu.classList.toggle("active");
+
+    menuBtn.innerText = isOpen ? "✕" : "☰";
+    menuBtn.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
+    menuBtn.setAttribute("aria-expanded", String(isOpen));
+}
+
+function closeMobileMenu() {
+    const navMenu = getElement("nav-menu");
+    const menuBtn = getElement("menu-btn");
+
+    if (!navMenu || !menuBtn) {
+        return;
+    }
+
+    navMenu.classList.remove("active");
+    menuBtn.innerText = "☰";
+    menuBtn.setAttribute("aria-label", "Abrir menu");
+    menuBtn.setAttribute("aria-expanded", "false");
+}
+
+
+// ==========================================
+// STATUS ABERTO / FECHADO
+// ==========================================
+
+function timeToMinutes(time) {
+    const [hours, minutes] = time.split(":").map(Number);
+    return hours * 60 + minutes;
+}
+
+function getStoreStatus() {
+    const now = new Date();
+    const currentDay = now.getDay();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+    const todaySchedule = OPENING_HOURS.find(item => item.day === currentDay);
+
+    if (!todaySchedule) {
+        return {
+            open: false,
+            text: "Estamos fechados",
+            detail: "Confira nosso horário pelo WhatsApp"
+        };
+    }
+
+    const openMinutes = timeToMinutes(todaySchedule.open);
+    const closeMinutes = timeToMinutes(todaySchedule.close);
+
+    // Horário normal, abre e fecha no mesmo dia.
+    if (closeMinutes > openMinutes) {
+        const isOpen = currentMinutes >= openMinutes && currentMinutes < closeMinutes;
+
+        return {
+            open: isOpen,
+            text: isOpen ? "Estamos abertos" : "Estamos fechados",
+            detail: isOpen
+                ? `Atendimento até ${todaySchedule.close}`
+                : `Abrimos às ${todaySchedule.open}`
+        };
+    }
+
+    // Horário que passa da meia-noite, exemplo: 18:00 até 02:00.
+    const isOpenOvernight = currentMinutes >= openMinutes || currentMinutes < closeMinutes;
+
+    return {
+        open: isOpenOvernight,
+        text: isOpenOvernight ? "Estamos abertos" : "Estamos fechados",
+        detail: isOpenOvernight
+            ? `Atendimento até ${todaySchedule.close}`
+            : `Abrimos às ${todaySchedule.open}`
+    };
+}
+
+function updateStoreStatus() {
+    const statusBox = getElement("status-box-home");
+    const statusText = getElement("status-text-home");
+    const statusDetail = getElement("status-detail-home");
+
+    if (!statusBox || !statusText || !statusDetail) {
+        return;
+    }
+
+    const status = getStoreStatus();
+
+    statusText.innerText = status.text;
+    statusDetail.innerText = status.detail;
+
+    statusBox.classList.toggle("closed", !status.open);
+}
+
+
+// ==========================================
+// PRODUTOS
+// ==========================================
+
+function renderProducts(category = null) {
+    const container = getElement("products-container");
+    const categoryTitle = getElement("category-title");
+
+    if (!container || !categoryTitle) {
+        return;
+    }
+
+    const filteredProducts = category
+        ? products.filter(product => product.category === category)
+        : products;
+
+    categoryTitle.innerText = category || "Produtos";
+
+    if (filteredProducts.length === 0) {
+        container.innerHTML = `
+            <div class="empty-products">
+                Nenhum produto encontrado nessa categoria.
+            </div>
+        `;
+        revealOnScroll();
+        return;
+    }
+
+    container.innerHTML = filteredProducts.map(product => {
+        const safeName = escapeHTML(product.name);
+        const safeDescription = escapeHTML(product.description || "");
+        const safeImage = escapeHTML(product.image || "");
+        const isAvailable = product.available !== false;
+
+        return `
+            <div class="card reveal">
+                <img src="${safeImage}" alt="${safeName}" loading="lazy" onerror="this.src='img/Logo.jpeg'">
+
+                <div class="card-content">
+                    <h4>${safeName}</h4>
+                    <p class="description">${safeDescription}</p>
+
+                    <div class="price">R$ ${formatPrice(product.price)}</div>
+
+                    ${isAvailable ? `
+                        <button class="add-btn" onclick="addToCart('${safeName}')">
+                            Adicionar
+                        </button>
+                    ` : `
+                        <button class="out-btn" disabled>
+                            Indisponível
+                        </button>
+                    `}
+                </div>
+            </div>
+        `;
+    }).join("");
+
+    revealOnScroll();
+}
+
+function filterProducts(category) {
+    currentCategory = category;
+    renderProducts(category);
+
+    const productsContainer = getElement("products-container");
+
+    if (productsContainer) {
+        productsContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     closeMobileMenu();
 }
 
 
 // ==========================================
-// ABRIR/FECHAR CARRINHO
+// CARRINHO
 // ==========================================
 
-function toggleCart() {
+function openCart() {
+    const cartElement = getElement("cart");
+    const overlay = getElement("cart-overlay");
 
-    const cartElement = document.getElementById("cart");
-
-    const overlay = document.getElementById("cart-overlay");
-
-    // Alterna classe active
-    cartElement.classList.toggle("active");
-
-    overlay.classList.toggle(
-        "active",
-        cartElement.classList.contains("active")
-    );
-}
-
-
-// ==========================================
-// ADICIONAR PRODUTO AO CARRINHO
-// ==========================================
-
-function addToCart(productName) {
-
-    // Procura produto pelo nome
-    const product = products.find(
-        item => item.name === productName
-    );
-
-    // Se não existir
-    if (!product) {
-
-        showToast("Produto indisponível.");
-
+    if (!cartElement || !overlay) {
         return;
     }
 
-    // Procura se já existe no carrinho
-    const existingItem = cart.find(
-        item => item.name === product.name
-    );
+    cartElement.classList.add("active");
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+}
 
-    // Se já existir aumenta quantidade
-    if (existingItem) {
+function closeCart() {
+    const cartElement = getElement("cart");
+    const overlay = getElement("cart-overlay");
 
-        existingItem.quantity += 1;
+    if (!cartElement || !overlay) {
+        return;
+    }
 
+    cartElement.classList.remove("active");
+    overlay.classList.remove("active");
+    document.body.style.overflow = "";
+}
+
+function toggleCart() {
+    const cartElement = getElement("cart");
+
+    if (!cartElement) {
+        return;
+    }
+
+    if (cartElement.classList.contains("active")) {
+        closeCart();
     } else {
+        openCart();
+    }
+}
 
-        // Se não existir adiciona novo item
+function addToCart(productName) {
+    const product = products.find(item => item.name === productName);
+
+    if (!product || product.available === false) {
+        showToast("Produto indisponível.");
+        return;
+    }
+
+    const existingItem = cart.find(item => item.name === product.name);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
         cart.push({
             name: product.name,
-            price: product.price,
+            price: Number(product.price),
             quantity: 1
         });
     }
 
-    // Atualiza carrinho
     updateCart();
-
-    // Mostra mensagem
     showToast("Produto adicionado 🍺");
 }
 
-
-// ==========================================
-// AUMENTAR QUANTIDADE
-// ==========================================
-
 function increaseQuantity(index) {
+    if (!cart[index]) {
+        return;
+    }
 
-    // Soma +1
     cart[index].quantity += 1;
-
-    // Atualiza carrinho
     updateCart();
 }
 
-
-// ==========================================
-// DIMINUIR QUANTIDADE
-// ==========================================
-
 function decreaseQuantity(index) {
+    if (!cart[index]) {
+        return;
+    }
 
-    // Se quantidade maior que 1
     if (cart[index].quantity > 1) {
-
         cart[index].quantity -= 1;
-
     } else {
-
-        // Remove item do array
         cart.splice(index, 1);
     }
 
-    // Atualiza carrinho
     updateCart();
 }
-
-
-// ==========================================
-// REMOVER ITEM
-// ==========================================
 
 function removeItem(index) {
+    if (!cart[index]) {
+        return;
+    }
 
-    // Remove item específico
     cart.splice(index, 1);
-
-    // Atualiza carrinho
     updateCart();
 }
 
-
-// ==========================================
-// LIMPAR CARRINHO
-// ==========================================
-
-function clearCart() {
-
-    // Esvazia array
+function clearCart(showMessage = false) {
     cart = [];
-
-    // Atualiza interface
+    localStorage.removeItem(CART_KEY);
     updateCart();
 
-    // Remove do navegador
-    localStorage.removeItem(CART_KEY);
+    if (showMessage) {
+        showToast("Carrinho limpo.");
+    }
 }
 
+function updateCartCount() {
+    const cartCount = getElement("cart-count");
 
-// ==========================================
-// ATUALIZAR CARRINHO
-// ==========================================
+    if (!cartCount) {
+        return;
+    }
+
+    const totalItems = cart.reduce((total, item) => total + Number(item.quantity || 0), 0);
+    cartCount.innerText = totalItems;
+}
 
 function updateCart() {
+    const cartItems = getElement("cart-items");
+    const cartTotal = getElement("cart-total");
 
-    // Elementos HTML
-    const cartItems =
-        document.getElementById("cart-items");
-
-    const cartTotal =
-        document.getElementById("cart-total");
+    if (!cartItems || !cartTotal) {
+        return;
+    }
 
     let total = 0;
 
-    // Cria HTML dos itens
-    const itemsHTML = cart.map((item, index) => {
-
-        // Calcula subtotal
-        const subtotal =
-            item.price * item.quantity;
-
-        // Soma total
-        total += subtotal;
-
-        return `
-            <div class="cart-item">
-
-                <strong>${item.name}</strong>
-
-                <br>
-
-                R$ ${formatPrice(subtotal)}
-
-                <div class="quantity-box">
-
-                    <button onclick="decreaseQuantity(${index})">
-                        -
-                    </button>
-
-                    <span>${item.quantity}</span>
-
-                    <button onclick="increaseQuantity(${index})">
-                        +
-                    </button>
-
-                </div>
-
+    if (cart.length === 0) {
+        cartItems.innerHTML = `
+            <div class="empty-products">
+                Seu carrinho está vazio.
             </div>
         `;
+    } else {
+        cartItems.innerHTML = cart.map((item, index) => {
+            const subtotal = Number(item.price) * Number(item.quantity);
+            total += subtotal;
 
-    }).join("");
+            return `
+                <div class="cart-item">
+                    <div>
+                        <strong>${escapeHTML(item.name)}</strong>
+                        <small>R$ ${formatPrice(item.price)} cada</small>
+                        <p>Subtotal: R$ ${formatPrice(subtotal)}</p>
 
-    // Atualiza HTML
-    cartItems.innerHTML = itemsHTML;
+                        <div class="quantity-box">
+                            <button type="button" onclick="decreaseQuantity(${index})" aria-label="Diminuir quantidade">-</button>
+                            <span>${item.quantity}</span>
+                            <button type="button" onclick="increaseQuantity(${index})" aria-label="Aumentar quantidade">+</button>
+                        </div>
+                    </div>
 
-    // Atualiza total
-    cartTotal.innerText =
-        formatPrice(total);
+                    <button class="remove-btn" type="button" onclick="removeItem(${index})" aria-label="Remover item">
+                        ✕
+                    </button>
+                </div>
+            `;
+        }).join("");
+    }
 
-    // Salva carrinho
+    cartTotal.innerText = formatPrice(total);
+    updateCartCount();
     saveCart();
 }
 
 
 // ==========================================
-// VALIDAR PEDIDO
+// PEDIDO NO WHATSAPP
 // ==========================================
 
+function getCheckoutData() {
+    return {
+        nome: getElement("nome")?.value.trim() || "",
+        endereco: getElement("endereco")?.value.trim() || "",
+        pagamento: getElement("pagamento")?.value.trim() || "",
+        observacao: getElement("observacao")?.value.trim() || ""
+    };
+}
+
 function validateOrder() {
+    const data = getCheckoutData();
 
-    // Se carrinho vazio
     if (cart.length <= 0) {
-
         showToast("Carrinho vazio.");
-
+        openCart();
         return false;
     }
 
-    // Tudo certo
+    if (!data.nome) {
+        showToast("Digite seu nome.");
+        getElement("nome")?.focus();
+        return false;
+    }
+
+    if (!data.endereco) {
+        showToast("Digite seu endereço.");
+        getElement("endereco")?.focus();
+        return false;
+    }
+
+    if (!data.pagamento) {
+        showToast("Escolha a forma de pagamento.");
+        getElement("pagamento")?.focus();
+        return false;
+    }
+
     return true;
 }
 
-
-// ==========================================
-// CRIAR MENSAGEM DO WHATSAPP
-// ==========================================
-
 function createOrderMessage() {
-
+    const data = getCheckoutData();
     let total = 0;
 
-    let message =
-        `🍺 *NOVO PEDIDO*\n\n`;
+    let message = "🍺 *NOVO PEDIDO - ADEGA DO VIZINHO*\n\n";
 
-    // Percorre itens do carrinho
+    message += "🛒 *Itens do pedido:*\n";
+
     cart.forEach(item => {
-
-        const subtotal =
-            item.price * item.quantity;
-
+        const subtotal = Number(item.price) * Number(item.quantity);
         total += subtotal;
 
-        message +=
-            `- ${item.quantity}x ${item.name}\n`;
+        message += `- ${item.quantity}x ${item.name} | R$ ${formatPrice(subtotal)}\n`;
     });
 
-    // Adiciona total
-    message +=
-        `\n💰 Total: R$ ${formatPrice(total)}`;
+    message += `\n💰 *Total:* R$ ${formatPrice(total)}\n\n`;
+    message += `👤 *Nome:* ${data.nome}\n`;
+    message += `📍 *Endereço:* ${data.endereco}\n`;
+    message += `💳 *Pagamento:* ${data.pagamento}\n`;
+
+    if (data.observacao) {
+        message += `📝 *Observação:* ${data.observacao}\n`;
+    }
 
     return encodeURIComponent(message);
 }
 
+function clearCheckoutFields() {
+    const nome = getElement("nome");
+    const endereco = getElement("endereco");
+    const pagamento = getElement("pagamento");
+    const observacao = getElement("observacao");
 
-// ==========================================
-// ENVIAR PEDIDO
-// ==========================================
+    if (nome) nome.value = "";
+    if (endereco) endereco.value = "";
+    if (pagamento) pagamento.value = "";
+    if (observacao) observacao.value = "";
+}
 
 function sendOrder() {
-
-    // Valida pedido
     if (!validateOrder()) {
         return;
     }
 
-    // Cria mensagem
-    const message =
-        createOrderMessage();
+    const message = createOrderMessage();
+    const url = `https://wa.me/${WHATSAPP_PHONE}?text=${message}`;
 
-    // Cria URL WhatsApp
-    const url =
-        `https://wa.me/${WHATSAPP_PHONE}?text=${message}`;
+    window.open(url, "_blank", "noopener,noreferrer");
 
-    // Abre WhatsApp
-    window.open(url, "_blank");
-
-    // Limpa carrinho
     clearCart();
+    clearCheckoutFields();
+    closeCart();
 
-    // Mensagem sucesso
     showToast("Pedido enviado 🍺");
 }
 
@@ -539,24 +564,13 @@ function sendOrder() {
 // ==========================================
 
 function revealOnScroll() {
-
-    // Pega elementos
-    const reveals =
-        document.querySelectorAll(".reveal");
+    const reveals = document.querySelectorAll(".reveal");
 
     reveals.forEach(item => {
+        const windowHeight = window.innerHeight;
+        const elementTop = item.getBoundingClientRect().top;
 
-        // Altura da tela
-        const windowHeight =
-            window.innerHeight;
-
-        // Distância topo
-        const elementTop =
-            item.getBoundingClientRect().top;
-
-        // Quando aparecer ativa animação
         if (elementTop < windowHeight - 100) {
-
             item.classList.add("active");
         }
     });
@@ -567,17 +581,33 @@ function revealOnScroll() {
 // EVENTOS GLOBAIS
 // ==========================================
 
-// Evento scroll
-window.addEventListener(
-    "scroll",
-    revealOnScroll
-);
+window.addEventListener("scroll", revealOnScroll);
 
-// Renderiza produtos ao iniciar
-renderProducts();
+window.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeCart();
+        closeMobileMenu();
+    }
+});
 
-// Atualiza carrinho
-updateCart();
+window.addEventListener("resize", () => {
+    if (window.innerWidth > 1100) {
+        closeMobileMenu();
+    }
+});
 
-// Ativa animação inicial
-revealOnScroll();
+// Fecha o menu mobile quando clicar em algum link do menu.
+document.querySelectorAll("#nav-menu a").forEach(link => {
+    link.addEventListener("click", closeMobileMenu);
+});
+
+// Inicia o site depois que o HTML estiver carregado.
+document.addEventListener("DOMContentLoaded", () => {
+    renderProducts();
+    updateCart();
+    updateStoreStatus();
+    revealOnScroll();
+});
+
+// Atualiza o status aberto/fechado a cada minuto.
+setInterval(updateStoreStatus, 60000);

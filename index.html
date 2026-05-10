@@ -4,42 +4,32 @@
 <head>
     <!-- Define os caracteres do site para aceitar acentos e símbolos -->
     <meta charset="UTF-8">
-
     <!-- Faz o site se adaptar corretamente em celular, tablet e computador -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Título que aparece na aba do navegador -->
     <title>Adega do Vizinho | Bebidas, Copões e Combos</title>
-
     <!-- Descrição do site para Google e redes sociais -->
     <meta name="description"
         content="Adega do Vizinho: peça copões, bebidas geladas, energéticos, cervejas e combos direto pelo WhatsApp.">
-
     <!-- Palavras-chave relacionadas ao site -->
     <meta name="keywords"
-        content="adega, adega do vizinho, bebidas, copão, whisky, energético, cerveja, delivery de bebidas">
-
+        content="adega, adega do vizinho, bebidas, cFopão, whisky, energético, cerveja, delivery de bebidas">
     <!-- Cor do tema em navegadores mobile -->
     <meta name="theme-color" content="#050505">
-
     <!-- Informações usadas quando o link do site é compartilhado -->
     <meta property="og:title" content="Adega do Vizinho">
     <meta property="og:description" content="Seu rolê começa aqui. Bebidas geladas e pedido rápido pelo WhatsApp.">
     <meta property="og:image" content="img/Logo.jpeg">
     <meta property="og:type" content="website">
-
     <!-- Ícone pequeno que aparece na aba do navegador -->
     <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
-
     <!-- Conexão com o Google Fonts para carregar fontes mais rápido -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <!-- Importação das fontes Bebas Neue e Poppins -->
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
-
     <!-- Liga o arquivo CSS ao HTML -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -50,8 +40,8 @@
     <!-- CABEÇALHO DO SITE -->
     <!-- ========================================== -->
     <!-- Aqui ficam logo, menu, botão mobile e botão do carrinho -->
-    <header>
 
+    <header>
         <!-- Logo clicável que leva o usuário de volta para o início -->
         <a href="#inicio" class="logo" aria-label="Voltar para o início">
             <img src="img/Logo.jpeg" alt="Logo Adega do Vizinho">
@@ -61,20 +51,18 @@
                 <span>Sempre perto, sempre gelada</span>
             </div>
         </a>
-
         <!-- Menu principal de navegação -->
         <nav id="nav-menu">
             <a href="#inicio">Início</a>
             <a href="#categorias">Catálogo</a>
             <a href="#contato">Contato</a>
         </nav>
-
         <!-- Botão do menu mobile/hambúrguer -->
         <!-- No celular, ele abre e fecha o menu -->
-        <button class="menu-btn" id="menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menu">
+        <button class="menu-btn" id="menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menu"
+            aria-expanded="false">
             ☰
         </button>
-
         <!-- Botão que abre o carrinho -->
         <!-- O span cart-count mostra a quantidade de itens no carrinho -->
         <button class="cart-btn" onclick="toggleCart()" aria-label="Abrir carrinho">
@@ -88,80 +76,65 @@
         <!-- ========================================== -->
         <!-- SEÇÃO INICIAL / HOME -->
         <!-- ========================================== -->
+
         <section class="home-page" id="inicio">
             <div class="home-content">
-
                 <!-- Texto principal da página inicial -->
                 <div class="home-text reveal">
                     <span class="tag">Adega online</span>
-
                     <h1>
                         Seu rolê
                         <br>
                         começa aqui.
                     </h1>
-
                     <p class="subtitle">
                         Copões, combos, cervejas e bebidas geladas com pedido rápido pelo WhatsApp.
                     </p>
-
                     <!-- Botões principais da home -->
                     <div class="home-actions">
-
                         <!-- Leva para a parte das categorias -->
                         <a href="#categorias" class="catalog-btn">Ver Catálogo</a>
-
                         <!-- Abre conversa direta no WhatsApp -->
                         <a href="https://wa.me/5511917742509" target="_blank" rel="noopener" class="outline-btn">
                             WhatsApp
                         </a>
                     </div>
                 </div>
-
                 <!-- Card visual da direita na home -->
                 <div class="hero-panel reveal">
                     <div class="hero-card">
-
                         <!-- Logo grande dentro do card -->
                         <img src="img/Logo.jpeg" class="hero-logo" alt="Logo Adega do Vizinho">
-
                         <h2>Adega do Vizinho</h2>
-
                         <p>
                             Bebida gelada, atendimento rápido e pedido direto no WhatsApp.
                         </p>
-
                         <!-- Caixa de status aberto/fechado -->
                         <!-- O JavaScript altera esse texto automaticamente -->
                         <div class="status-box" id="status-box-home">
                             <span></span>
-
                             <div>
                                 <p id="status-text-home">Verificando horário...</p>
                                 <small id="status-detail-home">Aguarde um instante</small>
                             </div>
                         </div>
                     </div>
-
                     <!-- Informações rápidas abaixo do card -->
                     <div class="mini-info">
                         <div>
                             <strong>Entrega</strong>
                             <span>Rápida</span>
                         </div>
-
                         <div>
                             <strong>Pedido</strong>
                             <span>Online</span>
                         </div>
-
                         <div>
                             <strong>Bebidas</strong>
                             <span>Geladas</span>
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -169,13 +142,10 @@
         <!-- SEÇÃO SOBRE A ADEGA -->
         <!-- ========================================== -->
         <section class="about-section reveal">
-
             <!-- Texto explicando sobre a adega -->
             <div class="about-box">
                 <span class="small-title">Sobre nós</span>
-
                 <h2>Adega prática para qualquer momento</h2>
-
                 <p>
                     A Adega do Vizinho foi criada para facilitar seu pedido. Você escolhe os produtos,
                     adiciona no carrinho e envia tudo direto pelo WhatsApp de forma rápida e simples.
@@ -184,19 +154,16 @@
 
             <!-- Cards de contato e informações -->
             <div class="info-grid" id="contato">
-
                 <!-- Link do Instagram -->
                 <a href="https://instagram.com/_adegadovizinho" target="_blank" rel="noopener" class="info-card">
                     <strong>Instagram</strong>
                     <span>@_adegadovizinho</span>
                 </a>
-
                 <!-- Link do WhatsApp -->
                 <a href="https://wa.me/5511917742509" target="_blank" rel="noopener" class="info-card">
                     <strong>WhatsApp</strong>
                     <span>(11) 91774-2509</span>
                 </a>
-
                 <!-- Card explicando como pedir -->
                 <div class="info-card">
                     <strong>Como pedir</strong>
@@ -214,39 +181,32 @@
                 <span>Escolha uma categoria</span>
                 <h2>Catálogo</h2>
             </div>
-
             <div class="category-grid">
-
                 <!-- Filtra produtos da categoria Copão -->
                 <button class="category-card" onclick="filterProducts('Copão')">
                     <div>🍹</div>
                     <span>Copão</span>
                 </button>
-
                 <!-- Filtra produtos da categoria Energético -->
                 <button class="category-card" onclick="filterProducts('Energético')">
                     <div>⚡</div>
                     <span>Energético</span>
                 </button>
-
                 <!-- Filtra produtos da categoria Gelo de Sabor -->
                 <button class="category-card" onclick="filterProducts('Gelo de Sabor')">
                     <div>❄️</div>
                     <span>Gelo de Sabor</span>
                 </button>
-
                 <!-- Filtra produtos da categoria Cerveja -->
                 <button class="category-card" onclick="filterProducts('Cerveja')">
                     <div>🍺</div>
                     <span>Cerveja</span>
                 </button>
-
                 <!-- Filtra produtos da categoria Combos -->
                 <button class="category-card" onclick="filterProducts('Combos')">
                     <div>🔥</div>
                     <span>Combos</span>
                 </button>
-
             </div>
         </section>
 
@@ -256,17 +216,14 @@
         <section class="catalog-section reveal">
             <div class="section-title">
                 <span>Produtos disponíveis</span>
-
                 <!-- Esse título muda conforme a categoria selecionada -->
                 <h2 id="category-title">Produtos</h2>
             </div>
-
             <!-- Aqui o JavaScript cria os cards dos produtos automaticamente -->
             <section class="products" id="products-container"></section>
         </section>
 
     </main>
-
     <!-- ========================================== -->
     <!-- FUNDO ESCURO DO CARRINHO -->
     <!-- ========================================== -->
