@@ -9,6 +9,11 @@ const products = [
         category: "Copão",
         name: "Copão de Red Label Premium",
         description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
+        topics: [
+            "Mais sabores de gelo disponíveis",
+            "Consulte opções de energético",
+            "Pode escolher adicionais"
+        ],
         price: 30,
         image: "img/Produtos/red-premium.png",
         available: true
@@ -18,6 +23,11 @@ const products = [
         category: "Copão",
         name: "Copão de Red Label Básico",
         description: "Copão de 700ml com Whisky + Energetico Vibe + Gelo de coco.",
+        topics: [
+            "Mais sabores de gelo disponíveis",
+            "Consulte opções de energético",
+            "Pode escolher adicionais"
+        ],
         price: 30,
         image: "img/Produtos/red-basico.png",
         available: true
@@ -27,23 +37,31 @@ const products = [
         category: "Copão",
         name: "Copão de Jack Daniels Premium",
         description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
+        topics: [
+            "Mais sabores de gelo disponíveis",
+            "Consulte opções de energético",
+            "Pode escolher adicionais"
+        ],
         price: 30,
         image: "img/Produtos/jack-premium.png",
         available: true
     },
+
     {
         category: "Copão",
         name: "Copão de Jack Daniels Básico",
         description: "Copão de 700ml com Whisky + Energetico Vibe + Gelo de coco.",
+        topics: [
+            "Mais sabores de gelo disponíveis",
+            "Consulte opções de energético",
+            "Pode escolher adicionais"
+        ],
         price: 30,
         image: "img/Produtos/jack-basico.png",
         available: true
     }
 
-
-
 ];
-
 
 
 // ==========================================
@@ -277,6 +295,14 @@ function renderProducts(category = null) {
         const safeName = escapeHTML(product.name);
         const safeDescription = escapeHTML(product.description || "");
         const safeImage = escapeHTML(product.image || "");
+        const safeTopics = Array.isArray(product.topics) ? product.topics : [];
+        const topicsHTML = safeTopics.length > 0
+            ? `
+                <ul class="product-topics">
+                    ${safeTopics.map(topic => `<li>${escapeHTML(topic)}</li>`).join("")}
+                </ul>
+            `
+            : "";
         const isAvailable = product.available !== false;
 
         return `
@@ -286,6 +312,7 @@ function renderProducts(category = null) {
                 <div class="card-content">
                     <h4>${safeName}</h4>
                     <p class="description">${safeDescription}</p>
+                    ${topicsHTML}
 
                     <div class="price">R$ ${formatPrice(product.price)}</div>
 

@@ -525,6 +525,22 @@ nav a:hover {
     margin-bottom: 18px;
 }
 
+
+/* TÓPICOS DOS PRODUTOS */
+.product-topics {
+    margin: -6px 0 18px;
+    padding-left: 18px;
+    display: grid;
+    gap: 6px;
+    color: #d6d6d6;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.product-topics li::marker {
+    color: var(--gold);
+}
+
 .price {
     color: var(--gold);
     font-size: 30px;
@@ -1040,5 +1056,3 @@ footer strong {
     border-color: rgba(247, 183, 49, .45);
     color: var(--gold);
 }
-
-
