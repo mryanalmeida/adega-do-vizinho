@@ -4,7 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adega do Vizinho</title>
+    <title>Adega do Vizinho | Bebidas, Copões e Combos</title>
+
+    <meta name="description"
+        content="Adega do Vizinho: peça copões, bebidas geladas, energéticos, cervejas e combos direto pelo WhatsApp.">
+    <meta name="keywords"
+        content="adega, adega do vizinho, bebidas, copão, whisky, energético, cerveja, delivery de bebidas">
+    <meta name="theme-color" content="#050505">
+
+    <meta property="og:title" content="Adega do Vizinho">
+    <meta property="og:description" content="Seu rolê começa aqui. Bebidas geladas e pedido rápido pelo WhatsApp.">
+    <meta property="og:image" content="img/Logo.jpeg">
+    <meta property="og:type" content="website">
 
     <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
 
@@ -20,25 +31,25 @@
 <body>
 
     <header>
-        <div class="logo">
+        <a href="#inicio" class="logo" aria-label="Voltar para o início">
             <img src="img/Logo.jpeg" alt="Logo Adega do Vizinho">
             <div>
                 <h1>Adega do Vizinho</h1>
                 <span>Sempre perto, sempre gelada</span>
             </div>
-        </div>
+        </a>
 
-        <div class="header-search">
-            <input type="text" id="search-input" placeholder="Buscar bebida..." oninput="searchProducts()">
-        </div>
-
-        <nav>
+        <nav id="nav-menu">
             <a href="#inicio">Início</a>
             <a href="#categorias">Catálogo</a>
             <a href="#contato">Contato</a>
         </nav>
 
-        <button class="cart-btn" onclick="toggleCart()">
+        <button class="menu-btn" id="menu-btn" onclick="toggleMobileMenu()" aria-label="Abrir menu">
+            ☰
+        </button>
+
+        <button class="cart-btn" onclick="toggleCart()" aria-label="Abrir carrinho">
             🛒 <span id="cart-count">0</span>
         </button>
     </header>
@@ -63,7 +74,7 @@
 
                     <div class="home-actions">
                         <a href="#categorias" class="catalog-btn">Ver Catálogo</a>
-                        <a href="https://wa.me/5511917742509" target="_blank" class="outline-btn">
+                        <a href="https://wa.me/5511917742509" target="_blank" rel="noopener" class="outline-btn">
                             WhatsApp
                         </a>
                     </div>
@@ -81,7 +92,10 @@
 
                         <div class="status-box" id="status-box-home">
                             <span></span>
-                            <p id="status-text-home">Verificando horário...</p>
+                            <div>
+                                <p id="status-text-home">Verificando horário...</p>
+                                <small id="status-detail-home">Aguarde um instante</small>
+                            </div>
                         </div>
                     </div>
 
@@ -114,17 +128,17 @@
 
                 <p>
                     A Adega do Vizinho foi criada para facilitar seu pedido. Você escolhe os produtos,
-                    adiciona no carrinho e envia tudo direto pelo WhatsApp ou Instagram de forma rápida e simples.
+                    adiciona no carrinho e envia tudo direto pelo WhatsApp de forma rápida e simples.
                 </p>
             </div>
 
             <div class="info-grid" id="contato">
-                <a href="https://instagram.com/_adegadovizinho" target="_blank" class="info-card">
+                <a href="https://instagram.com/_adegadovizinho" target="_blank" rel="noopener" class="info-card">
                     <strong>Instagram</strong>
                     <span>@_adegadovizinho</span>
                 </a>
 
-                <a href="https://wa.me/5511917742509" target="_blank" class="info-card">
+                <a href="https://wa.me/5511917742509" target="_blank" rel="noopener" class="info-card">
                     <strong>WhatsApp</strong>
                     <span>(11) 91774-2509</span>
                 </a>
@@ -183,25 +197,27 @@
 
     </main>
 
-    <div class="cart" id="cart">
+    <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+
+    <aside class="cart" id="cart" aria-label="Carrinho de compras">
         <div class="cart-top">
             <div>
                 <h2>Seu Pedido</h2>
                 <p>Confira os itens antes de enviar.</p>
             </div>
 
-            <button class="close-btn" onclick="toggleCart()">✕</button>
+            <button class="close-btn" onclick="closeCart()" aria-label="Fechar carrinho">✕</button>
         </div>
 
         <div id="cart-items"></div>
 
         <div class="total">
-            Total: R$ <span id="cart-total">0.00</span>
+            Total: R$ <span id="cart-total">0,00</span>
         </div>
 
         <div class="checkout">
-            <input type="text" id="nome" placeholder="Seu nome">
-            <input type="text" id="endereco" placeholder="Seu endereço">
+            <input type="text" id="nome" placeholder="Seu nome" autocomplete="name">
+            <input type="text" id="endereco" placeholder="Seu endereço" autocomplete="street-address">
 
             <select id="pagamento">
                 <option value="">Forma de pagamento</option>
@@ -219,15 +235,16 @@
                 </button>
             </div>
         </div>
-    </div>
+    </aside>
 
-    <a href="https://wa.me/5511917742509" target="_blank" class="floating-whatsapp">
+    <a href="https://wa.me/5511917742509" target="_blank" rel="noopener" class="floating-whatsapp"
+        aria-label="Falar no WhatsApp">
         💬
     </a>
 
     <footer>
         <strong>Adega do Vizinho</strong>
-        <p>© 2025 • Todos os direitos reservados</p>
+        <p>© 2026 • Todos os direitos reservados</p>
     </footer>
 
     <script src="script.js"></script>

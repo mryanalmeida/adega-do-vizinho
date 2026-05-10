@@ -36,7 +36,7 @@ const products = [
         name: "Red Bull",
         description: "Energético Red Bull lata 250ml gelado.",
         price: 14,
-        image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e",
+        image: "https://images.unsplash.com/photo-1622543925917-763c34d1a86e?auto=format&fit=crop&w=900&q=70",
         available: true
     },
     {
@@ -44,7 +44,7 @@ const products = [
         name: "Gelo de Morango",
         description: "Gelo saborizado de morango para drinks.",
         price: 8,
-        image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd",
+        image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=70",
         available: true
     },
     {
@@ -52,7 +52,7 @@ const products = [
         name: "Heineken Long Neck",
         description: "Long neck Heineken extremamente gelada.",
         price: 12,
-        image: "https://images.unsplash.com/photo-1608270586620-248524c67de9",
+        image: "https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=900&q=70",
         available: false
     },
     {
@@ -60,16 +60,27 @@ const products = [
         name: "Combo Whisky + Energético",
         description: "Combo completo com whisky, energético e gelo.",
         price: 120,
-        image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b",
+        image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=900&q=70",
         available: true
     }
 ];
 
-let cart = JSON.parse(localStorage.getItem("adega-cart")) || [];
+const CART_KEY = "adega-cart";
+const WHATSAPP_PHONE = "5511917742509";
+
+let cart = loadCart();
 let currentCategory = null;
 
+function loadCart() {
+    try {
+        return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    } catch {
+        return [];
+    }
+}
+
 function saveCart() {
-    localStorage.setItem("adega-cart", JSON.stringify(cart));
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
 
 function showToast(message) {
@@ -80,34 +91,39 @@ function showToast(message) {
     }
 
     const toast = document.createElement("div");
-
     toast.className = "toast-message";
     toast.innerText = message;
 
     document.body.appendChild(toast);
 
-    setTimeout(() => {
-        toast.classList.add("show");
-    }, 100);
+    setTimeout(() => toast.classList.add("show"), 100);
 
     setTimeout(() => {
         toast.classList.remove("show");
-
-        setTimeout(() => {
-            toast.remove();
-        }, 300);
+        setTimeout(() => toast.remove(), 300);
     }, 2500);
 }
 
 function formatPrice(value) {
-    return value.toFixed(2).replace(".", ",");
+    return Number(value).toFixed(2).replace(".", ",");
 }
 
-function renderProducts(category = null, search = "") {
+function escapeHTML(value) {
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+function renderProducts(category = null) {
     const container = document.getElementById("products-container");
     const categoryTitle = document.getElementById("category-title");
 
-    container.innerHTML = "";
+    if (!container || !categoryTitle) {
+        return;
+    }
 
     let filteredProducts = products;
 
@@ -116,18 +132,6 @@ function renderProducts(category = null, search = "") {
         categoryTitle.innerText = category;
     } else {
         categoryTitle.innerText = "Produtos";
-    }
-
-    if (search.trim() !== "") {
-        const term = search.toLowerCase();
-
-        filteredProducts = products.filter(product =>
-            product.name.toLowerCase().includes(term) ||
-            product.description.toLowerCase().includes(term) ||
-            product.category.toLowerCase().includes(term)
-        );
-
-        categoryTitle.innerText = "Resultado da busca";
     }
 
     if (filteredProducts.length === 0) {
@@ -139,16 +143,20 @@ function renderProducts(category = null, search = "") {
         return;
     }
 
-    filteredProducts.forEach(product => {
-        container.innerHTML += `
+    const productsHTML = filteredProducts.map(product => {
+        const safeName = escapeHTML(product.name);
+        const safeDescription = escapeHTML(product.description);
+        const safeImage = escapeHTML(product.image);
+
+        return `
             <div class="card reveal">
-                <img src="${product.image}" alt="${product.name}">
+                <img src="${safeImage}" alt="${safeName}" loading="lazy">
 
                 <div class="card-content">
-                    <h4>${product.name}</h4>
+                    <h4>${safeName}</h4>
 
                     <p class="description">
-                        ${product.description}
+                        ${safeDescription}
                     </p>
 
                     <div class="price">
@@ -157,7 +165,7 @@ function renderProducts(category = null, search = "") {
 
                     ${product.available
                 ? `
-                            <button class="add-btn" onclick="addToCart('${product.name}')">
+                            <button class="add-btn" onclick="addToCart('${safeName}')">
                                 Adicionar
                             </button>
                         `
@@ -170,49 +178,86 @@ function renderProducts(category = null, search = "") {
                 </div>
             </div>
         `;
-    });
+    }).join("");
 
+    container.innerHTML = productsHTML;
     revealOnScroll();
 }
 
 function filterProducts(category) {
     currentCategory = category;
 
-    const searchInput = document.getElementById("search-input");
-
-    if (searchInput) {
-        searchInput.value = "";
-    }
-
     renderProducts(category);
 
-    document.getElementById("products-container").scrollIntoView({
-        behavior: "smooth"
-    });
-}
+    const productsContainer = document.getElementById("products-container");
 
-function searchProducts() {
-    const search = document.getElementById("search-input").value;
-
-    renderProducts(currentCategory, search);
-
-    if (search.trim() !== "") {
-        document.getElementById("products-container").scrollIntoView({
+    if (productsContainer) {
+        productsContainer.scrollIntoView({
             behavior: "smooth"
         });
     }
+
+    closeMobileMenu();
 }
 
 function toggleCart() {
-    document.getElementById("cart").classList.toggle("active");
+    const cartElement = document.getElementById("cart");
+    const overlay = document.getElementById("cart-overlay");
+
+    if (!cartElement || !overlay) {
+        return;
+    }
+
+    cartElement.classList.toggle("active");
+    overlay.classList.toggle("active", cartElement.classList.contains("active"));
 }
 
 function openCart() {
-    document.getElementById("cart").classList.add("active");
+    const cartElement = document.getElementById("cart");
+    const overlay = document.getElementById("cart-overlay");
+
+    if (!cartElement || !overlay) {
+        return;
+    }
+
+    cartElement.classList.add("active");
+    overlay.classList.add("active");
 }
 
 function closeCart() {
-    document.getElementById("cart").classList.remove("active");
+    const cartElement = document.getElementById("cart");
+    const overlay = document.getElementById("cart-overlay");
+
+    if (!cartElement || !overlay) {
+        return;
+    }
+
+    cartElement.classList.remove("active");
+    overlay.classList.remove("active");
+}
+
+function toggleMobileMenu() {
+    const navMenu = document.getElementById("nav-menu");
+    const menuBtn = document.getElementById("menu-btn");
+
+    if (!navMenu || !menuBtn) {
+        return;
+    }
+
+    navMenu.classList.toggle("active");
+    menuBtn.innerText = navMenu.classList.contains("active") ? "✕" : "☰";
+}
+
+function closeMobileMenu() {
+    const navMenu = document.getElementById("nav-menu");
+    const menuBtn = document.getElementById("menu-btn");
+
+    if (!navMenu || !menuBtn) {
+        return;
+    }
+
+    navMenu.classList.remove("active");
+    menuBtn.innerText = "☰";
 }
 
 function addCartItem(name, price) {
@@ -230,7 +275,6 @@ function addCartItem(name, price) {
     }
 
     updateCart();
-
     showToast("Produto adicionado ao carrinho 🍺");
 
     if (firstItem) {
@@ -239,9 +283,17 @@ function addCartItem(name, price) {
 }
 
 function addToCart(productName) {
-    const product = products.find(item => item.name === productName);
+    const decodedName = productName
+        .replaceAll("&amp;", "&")
+        .replaceAll("&lt;", "<")
+        .replaceAll("&gt;", ">")
+        .replaceAll("&quot;", '"')
+        .replaceAll("&#039;", "'");
+
+    const product = products.find(item => item.name === decodedName);
 
     if (!product || !product.available) {
+        showToast("Produto indisponível no momento.");
         return;
     }
 
@@ -249,11 +301,19 @@ function addToCart(productName) {
 }
 
 function increaseQuantity(index) {
+    if (!cart[index]) {
+        return;
+    }
+
     cart[index].quantity += 1;
     updateCart();
 }
 
 function decreaseQuantity(index) {
+    if (!cart[index]) {
+        return;
+    }
+
     if (cart[index].quantity > 1) {
         cart[index].quantity -= 1;
     } else {
@@ -264,23 +324,30 @@ function decreaseQuantity(index) {
 }
 
 function removeItem(index) {
+    if (!cart[index]) {
+        return;
+    }
+
     cart.splice(index, 1);
     updateCart();
 }
 
 function clearCart() {
     cart = [];
-
     updateCart();
-
-    localStorage.removeItem("adega-cart");
+    localStorage.removeItem(CART_KEY);
 }
 
 function clearCheckoutFields() {
-    document.getElementById("nome").value = "";
-    document.getElementById("endereco").value = "";
-    document.getElementById("pagamento").value = "";
-    document.getElementById("observacao").value = "";
+    const fields = ["nome", "endereco", "pagamento", "observacao"];
+
+    fields.forEach(id => {
+        const field = document.getElementById(id);
+
+        if (field) {
+            field.value = "";
+        }
+    });
 }
 
 function updateCart() {
@@ -288,60 +355,55 @@ function updateCart() {
     const cartTotal = document.getElementById("cart-total");
     const cartCount = document.getElementById("cart-count");
 
-    cartItems.innerHTML = "";
+    if (!cartItems || !cartTotal || !cartCount) {
+        return;
+    }
 
     let total = 0;
     let totalItems = 0;
 
     if (cart.length === 0) {
         cartItems.innerHTML = `
-            <p style="
-                color:#999;
-                text-align:center;
-                margin-top:20px;
-            ">
+            <p style="color:#999; text-align:center; margin-top:20px;">
                 Seu carrinho está vazio.
             </p>
         `;
-    }
+    } else {
+        const itemsHTML = cart.map((item, index) => {
+            const subtotal = item.price * item.quantity;
 
-    cart.forEach((item, index) => {
-        const subtotal = item.price * item.quantity;
+            total += subtotal;
+            totalItems += item.quantity;
 
-        total += subtotal;
-        totalItems += item.quantity;
+            return `
+                <div class="cart-item">
+                    <div>
+                        <strong>${escapeHTML(item.name)}</strong>
+                        <br>
+                        <small>
+                            R$ ${formatPrice(item.price)} x ${item.quantity}
+                        </small>
+                        <br>
+                        <strong>
+                            R$ ${formatPrice(subtotal)}
+                        </strong>
 
-        cartItems.innerHTML += `
-            <div class="cart-item">
-                <div>
-                    <strong>${item.name}</strong>
-                    <br>
-                    <small>
-                        R$ ${formatPrice(item.price)} x ${item.quantity}
-                    </small>
-                    <br>
-                    <strong>
-                        R$ ${formatPrice(subtotal)}
-                    </strong>
-
-                    <div style="
-                        margin-top:10px;
-                        display:flex;
-                        gap:8px;
-                        align-items:center;
-                    ">
-                        <button class="remove-btn" onclick="decreaseQuantity(${index})">-</button>
-                        <span>${item.quantity}</span>
-                        <button class="remove-btn" onclick="increaseQuantity(${index})">+</button>
+                        <div class="quantity-box">
+                            <button class="remove-btn" onclick="decreaseQuantity(${index})" aria-label="Diminuir quantidade">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="remove-btn" onclick="increaseQuantity(${index})" aria-label="Aumentar quantidade">+</button>
+                        </div>
                     </div>
-                </div>
 
-                <button class="remove-btn" onclick="removeItem(${index})">
-                    ✕
-                </button>
-            </div>
-        `;
-    });
+                    <button class="remove-btn" onclick="removeItem(${index})" aria-label="Remover item">
+                        ✕
+                    </button>
+                </div>
+            `;
+        }).join("");
+
+        cartItems.innerHTML = itemsHTML;
+    }
 
     cartTotal.innerText = formatPrice(total);
     cartCount.innerText = totalItems;
@@ -349,26 +411,54 @@ function updateCart() {
     saveCart();
 }
 
-function updateStoreStatus() {
-    const now = new Date();
+function getStoreStatus(now = new Date()) {
+    const day = now.getDay();
     const hour = now.getHours();
 
-    const isOpen = hour >= 18 || hour < 2;
+    const isWeekend = day === 5 || day === 6 || day === 0;
+    const openHour = 18;
+    const closeHour = 2;
+
+    const isOpen = hour >= openHour || hour < closeHour;
+
+    if (isOpen) {
+        return {
+            open: true,
+            title: "Aberto agora",
+            detail: "Faça seu pedido até 02:00."
+        };
+    }
+
+    if (hour >= closeHour && hour < openHour) {
+        return {
+            open: false,
+            title: "Fechado no momento",
+            detail: `Abrimos hoje às ${openHour}:00.`
+        };
+    }
+
+    return {
+        open: false,
+        title: "Fechado no momento",
+        detail: isWeekend ? "Abrimos em breve." : `Abrimos às ${openHour}:00.`
+    };
+}
+
+function updateStoreStatus() {
+    const status = getStoreStatus();
 
     const statusHome = document.getElementById("status-text-home");
+    const statusDetail = document.getElementById("status-detail-home");
     const homeBox = document.getElementById("status-box-home");
 
-    if (!statusHome || !homeBox) {
+    if (!statusHome || !statusDetail || !homeBox) {
         return;
     }
 
-    if (isOpen) {
-        statusHome.innerText = "Aberto agora";
-        homeBox.classList.remove("closed");
-    } else {
-        statusHome.innerText = "Fechado no momento";
-        homeBox.classList.add("closed");
-    }
+    statusHome.innerText = status.title;
+    statusDetail.innerText = status.detail;
+
+    homeBox.classList.toggle("closed", !status.open);
 }
 
 function validateOrder() {
@@ -381,21 +471,21 @@ function validateOrder() {
     const endereco = document.getElementById("endereco");
     const pagamento = document.getElementById("pagamento");
 
-    if (nome.value.trim() === "") {
+    if (!nome || nome.value.trim() === "") {
         showToast("Informe seu nome.");
-        nome.focus();
+        nome?.focus();
         return false;
     }
 
-    if (endereco.value.trim() === "") {
+    if (!endereco || endereco.value.trim() === "") {
         showToast("Informe seu endereço.");
-        endereco.focus();
+        endereco?.focus();
         return false;
     }
 
-    if (pagamento.value === "") {
+    if (!pagamento || pagamento.value === "") {
         showToast("Selecione a forma de pagamento.");
-        pagamento.focus();
+        pagamento?.focus();
         return false;
     }
 
@@ -439,9 +529,8 @@ function sendOrder() {
         return;
     }
 
-    const phone = "5511917742509";
     const message = createOrderMessage(true);
-    const url = `https://wa.me/${phone}?text=${message}`;
+    const url = `https://wa.me/${WHATSAPP_PHONE}?text=${message}`;
 
     window.open(url, "_blank");
 
@@ -466,9 +555,28 @@ function revealOnScroll() {
     });
 }
 
+document.addEventListener("click", event => {
+    const navMenu = document.getElementById("nav-menu");
+    const menuBtn = document.getElementById("menu-btn");
+
+    if (!navMenu || !menuBtn) {
+        return;
+    }
+
+    const clickedInsideMenu = navMenu.contains(event.target);
+    const clickedMenuButton = menuBtn.contains(event.target);
+
+    if (!clickedInsideMenu && !clickedMenuButton) {
+        closeMobileMenu();
+    }
+});
+
 window.addEventListener("scroll", revealOnScroll);
+window.addEventListener("resize", revealOnScroll);
 
 renderProducts();
 updateCart();
 updateStoreStatus();
 revealOnScroll();
+
+setInterval(updateStoreStatus, 60000);
