@@ -11,10 +11,9 @@ const products = [
         description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
         topics: [
             "Mais sabores de gelo disponíveis",
-            "Consulte opções de energético",
-            "Pode escolher adicionais"
+            "Consulte os sabores disponíveis de energetico"
         ],
-        price: 30,
+        price: 0,
         image: "img/Produtos/red-premium.png",
         available: true
     },
@@ -25,10 +24,9 @@ const products = [
         description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
         topics: [
             "Mais sabores de gelo disponíveis",
-            "Consulte opções de energético",
-            "Pode escolher adicionais"
+            "Consulte os sabores disponíveis de energetico"
         ],
-        price: 30,
+        price: 0,
         image: "img/Produtos/red-basico.png",
         available: true
     },
@@ -39,10 +37,10 @@ const products = [
         description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
         topics: [
             "Mais sabores de gelo disponíveis",
-            "Consulte opções de energético",
-            "Pode escolher adicionais"
+            "Consulte os sabores disponíveis de energetico",
+            "Consulte os sabores disponíveis do whisky"
         ],
-        price: 30,
+        price: 0,
         image: "img/Produtos/jack-premium.png",
         available: true
     },
@@ -53,10 +51,10 @@ const products = [
         description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
         topics: [
             "Mais sabores de gelo disponíveis",
-            "Consulte opções de energético",
-            "Pode escolher adicionais"
+            "Consulte os sabores disponíveis de energetico",
+            "Consulte os sabores disponíveis do whisky"
         ],
-        price: 30,
+        price: 0,
         image: "img/Produtos/jack-basico.png",
         available: true
     }
