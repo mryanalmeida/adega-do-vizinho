@@ -4,6 +4,7 @@
 // Cada objeto representa um produto exibido no catálogo.
 
 const products = [
+
     {
         category: "Copão",
         name: "Copão de Red Label Premium",
@@ -11,8 +12,38 @@ const products = [
         price: 30,
         image: "img/Produtos/red-premium.png",
         available: true
+    },
+
+    {
+        category: "Copão",
+        name: "Copão de Red Label Básico",
+        description: "Copão de 700ml com Whisky + Energetico Vibe + Gelo de coco.",
+        price: 30,
+        image: "img/Produtos/red-basico.png",
+        available: true
+    },
+
+    {
+        category: "Copão",
+        name: "Copão de Jack Daniels Premium",
+        description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
+        price: 30,
+        image: "img/Produtos/jack-premium.png",
+        available: true
+    },
+    {
+        category: "Copão",
+        name: "Copão de Jack Daniels Básico",
+        description: "Copão de 700ml com Whisky + Energetico Vibe + Gelo de coco.",
+        price: 30,
+        image: "img/Produtos/jack-basico.png",
+        available: true
     }
+
+
+
 ];
+
 
 
 // ==========================================
@@ -25,13 +56,13 @@ const WHATSAPP_PHONE = "5511917742509";
 // Configure aqui o horário de funcionamento.
 // day: 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
 const OPENING_HOURS = [
-    { day: 0, open: "11:00", close: "02:00" }, // DOMINGO
-    { day: 1, open: "11:00", close: "00:00" }, // SEGUNDA
-    { day: 2, open: "11:00", close: "00:00" }, // TERÇA
-    { day: 3, open: "11:00", close: "00:00" }, // QUARTA
-    { day: 4, open: "11:00", close: "02:00" }, // QUINTA
-    { day: 5, open: "11:00", close: "02:00" }, // SEXTA
-    { day: 6, open: "11:00", close: "02:00" }  // SABADO
+    { day: 0, open: "11:00", close: "02:00" }, // DOMINGO - FEIRA
+    { day: 1, open: "11:00", close: "00:00" }, // SEGUNDA - FEIRA
+    { day: 2, open: "11:00", close: "00:00" }, // TERÇA - FEIRA
+    { day: 3, open: "11:00", close: "00:00" }, // QUARTA - FEIRA
+    { day: 4, open: "11:00", close: "02:00" }, // QUINTA - FEIRA
+    { day: 5, open: "11:00", close: "02:00" }, // SEXTA - FEIRA
+    { day: 6, open: "11:00", close: "02:00" }  // SABADO - FEIRA
 ];
 
 
