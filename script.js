@@ -4,6 +4,9 @@
 // Cada objeto representa um produto exibido no catálogo.
 
 const products = [
+    // ==========================================
+    // ============   WHISKY   ==================
+    // ==========================================
 
     {
         category: "Copão",
@@ -28,7 +31,7 @@ const products = [
         ],
         price: 0,
         image: "img/Produtos/red-basico.png",
-        available: true
+        available: false
     },
 
     {
@@ -42,7 +45,7 @@ const products = [
         ],
         price: 0,
         image: "img/Produtos/jack-premium.png",
-        available: true
+        available: false
     },
 
     {
@@ -56,8 +59,12 @@ const products = [
         ],
         price: 0,
         image: "img/Produtos/jack-basico.png",
-        available: true
+        available: false
     }
+
+    // ==========================================
+    // =============    GIN    ==================
+    // ==========================================
 
 ];
 
