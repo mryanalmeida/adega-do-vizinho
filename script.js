@@ -60,11 +60,43 @@ const products = [
         price: 0,
         image: "img/Produtos/jack-basico.png",
         available: false
-    }
+    },
 
     // ==========================================
     // =============    GIN    ==================
     // ==========================================
+
+
+
+    // ==========================================
+    // ==========    ENÉRGETICO    ==============
+    // ==========================================
+
+    {
+        category: "Energético",
+        name: "Red Bull",
+        description: "Energético Red Bull gelado.",
+        topics: [
+            "Escolha o tamanho",
+            "Consulte os sabores disponiveis",
+        ],
+        variants: [
+            {
+                name: "250ml",
+                price: 10
+            },
+            {
+                name: "355ml",
+                price: 14
+            },
+            {
+                name: "473ml",
+                price: 18
+            },
+        ],
+        image: "img/Produtos/redbull.png",
+        available: true
+    }
 
 ];
 
@@ -79,13 +111,13 @@ const WHATSAPP_PHONE = "5511917742509";
 // Configure aqui o horário de funcionamento.
 // day: 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
 const OPENING_HOURS = [
-    { day: 0, open: "11:00", close: "02:00" }, // DOMINGO
-    { day: 1, open: "11:00", close: "00:00" }, // SEGUNDA-FEIRA
-    { day: 2, open: "11:00", close: "00:00" }, // TERÇA-FEIRA
-    { day: 3, open: "11:00", close: "00:00" }, // QUARTA-FEIRA
-    { day: 4, open: "11:00", close: "02:00" }, // QUINTA-FEIRA
-    { day: 5, open: "11:00", close: "02:00" }, // SEXTA-FEIRA
-    { day: 6, open: "11:00", close: "02:00" }  // SÁBADO
+    { day: 0, open: "00:00", close: "00:01" }, // DOMINGO
+    { day: 1, open: "00:00", close: "00:01" }, // SEGUNDA-FEIRA
+    { day: 2, open: "00:00", close: "00:01" }, // TERÇA-FEIRA
+    { day: 3, open: "00:00", close: "00:01" }, // QUARTA-FEIRA
+    { day: 4, open: "00:00", close: "00:01" }, // QUINTA-FEIRA
+    { day: 5, open: "00:00", close: "00:01" }, // SEXTA-FEIRA
+    { day: 6, open: "00:00", close: "00:01" }  // SÁBADO
 ];
 
 
@@ -130,6 +162,26 @@ function saveCart() {
 
 function formatPrice(value) {
     return Number(value || 0).toFixed(2).replace(".", ",");
+}
+
+function getProductVariants(product) {
+    return Array.isArray(product.variants)
+        ? product.variants.filter(variant =>
+            variant &&
+            typeof variant.name === "string" &&
+            Number(variant.price) >= 0
+        )
+        : [];
+}
+
+function getProductDisplayPrice(product) {
+    const variants = getProductVariants(product);
+
+    if (variants.length > 0) {
+        return `A partir de R$ ${formatPrice(variants[0].price)}`;
+    }
+
+    return `R$ ${formatPrice(product.price)}`;
 }
 
 function escapeHTML(value) {
@@ -308,10 +360,14 @@ function renderProducts(category = null) {
     }
 
     container.innerHTML = filteredProducts.map(product => {
+        const productIndex = products.indexOf(product);
         const safeName = escapeHTML(product.name);
         const safeDescription = escapeHTML(product.description || "");
         const safeImage = escapeHTML(product.image || "");
         const safeTopics = Array.isArray(product.topics) ? product.topics : [];
+        const variants = getProductVariants(product);
+        const hasVariants = variants.length > 0;
+
         const topicsHTML = safeTopics.length > 0
             ? `
                 <ul class="product-topics">
@@ -319,6 +375,23 @@ function renderProducts(category = null) {
                 </ul>
             `
             : "";
+
+        const variantsHTML = hasVariants
+            ? `
+                <div class="variant-box">
+                    <label for="product-variant-${productIndex}">Escolha uma opção:</label>
+
+                    <select class="variant-select" id="product-variant-${productIndex}">
+                        ${variants.map((variant, index) => `
+                            <option value="${index}">
+                                ${escapeHTML(variant.name)} - R$ ${formatPrice(variant.price)}
+                            </option>
+                        `).join("")}
+                    </select>
+                </div>
+            `
+            : "";
+
         const isAvailable = product.available !== false;
 
         return `
@@ -329,11 +402,12 @@ function renderProducts(category = null) {
                     <h4>${safeName}</h4>
                     <p class="description">${safeDescription}</p>
                     ${topicsHTML}
+                    ${variantsHTML}
 
-                    <div class="price">R$ ${formatPrice(product.price)}</div>
+                    <div class="price">${getProductDisplayPrice(product)}</div>
 
                     ${isAvailable ? `
-                        <button type="button" class="add-btn" onclick="addToCart('${encodeURIComponent(product.name)}')">
+                        <button type="button" class="add-btn" onclick="addToCart(${productIndex})">
                             Adicionar
                         </button>
                     ` : `
@@ -407,25 +481,39 @@ function toggleCart() {
     }
 }
 
-function addToCart(productName) {
-    const decodedName = decodeURIComponent(productName);
-    const product = products.find(item => item.name === decodedName);
+function addToCart(productIndex) {
+    const product = products[Number(productIndex)];
 
     if (!product || product.available === false) {
         showToast("Produto indisponível.");
         return;
     }
 
+    const variants = getProductVariants(product);
+    const variantSelect = getElement(`product-variant-${productIndex}`);
+    const selectedVariantIndex = variantSelect ? Number(variantSelect.value) : 0;
+    const selectedVariant = variants[selectedVariantIndex] || null;
+
+    const itemName = selectedVariant
+        ? `${product.name} - ${selectedVariant.name}`
+        : product.name;
+
+    const itemPrice = selectedVariant
+        ? Number(selectedVariant.price)
+        : Number(product.price);
+
     const cartWasEmpty = cart.length === 0;
 
-    const existingItem = cart.find(item => item.name === product.name);
+    const existingItem = cart.find(item => item.name === itemName);
 
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
         cart.push({
-            name: product.name,
-            price: Number(product.price),
+            name: itemName,
+            baseName: product.name,
+            variant: selectedVariant ? selectedVariant.name : "",
+            price: itemPrice,
             quantity: 1
         });
     }
