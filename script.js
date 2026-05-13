@@ -16,7 +16,7 @@ const products = [
             "Mais sabores de gelo disponíveis",
             "Consulte os sabores disponíveis de energetico"
         ],
-        price: 0,
+        price: 35,
         image: "img/Produtos/red-premium.png",
         available: true
     },
@@ -29,9 +29,9 @@ const products = [
             "Mais sabores de gelo disponíveis",
             "Consulte os sabores disponíveis de energetico"
         ],
-        price: 0,
+        price: 28,
         image: "img/Produtos/red-basico.png",
-        available: false
+        available: true
     },
 
     {
@@ -43,9 +43,9 @@ const products = [
             "Consulte os sabores disponíveis de energetico",
             "Consulte os sabores disponíveis do whisky"
         ],
-        price: 0,
+        price: 40,
         image: "img/Produtos/jack-premium.png",
-        available: false
+        available: true
     },
 
     {
@@ -57,9 +57,9 @@ const products = [
             "Consulte os sabores disponíveis de energetico",
             "Consulte os sabores disponíveis do whisky"
         ],
-        price: 0,
+        price: 38,
         image: "img/Produtos/jack-basico.png",
-        available: false
+        available: true
     },
 
     // ==========================================
@@ -75,18 +75,20 @@ const products = [
     {
         category: "Energético",
         name: "Red Bull",
-        description: "Energético Red Bull gelado.",
+        description: "Energético Red Bull 250ml.",
         topics: [
-            "Escolha o tamanho",
             "Consulte os sabores disponiveis",
+            //"Consulte os sabores disponiveis"
         ],
+        price: 11,
+
         variants: [
             {
                 name: "250ml",
                 price: 10
             },
             {
-                name: "355ml",
+               name: "355ml",
                 price: 14
             },
             {
@@ -94,7 +96,81 @@ const products = [
                 price: 18
             },
         ],
+
         image: "img/Produtos/redbull.png",
+        available: true
+    },
+
+    {
+        category: "Energético",
+        name: "Baly",
+        description: "Energético Baly 2L.",
+        topics: [
+            "Consulte os sabores disponiveis",
+            //"Consulte os sabores disponiveis"
+        ],
+        price: 10,
+        variants: [
+            {
+                name: "250ml",
+                price: 10
+            },
+            {
+               name: "473ml",
+                price: 14
+            },
+            {
+                name: "2L",
+                price: 18
+            },
+        ],
+        image: "img/Produtos/baly.png",
+        available: true
+    },
+
+    {
+        category: "Energético",
+        name: "V!be",
+        description: "Energético V!be 2L.",
+        topics: [
+            "Somente o sabor tradicional",
+            //"Consulte os sabores disponiveis"
+        ],
+        price: 8,
+        variants: [
+            {
+               name: "473ml",
+                price: 14
+            },
+            {
+                name: "2L",
+                price: 18
+            },
+        ],
+        image: "img/Produtos/v!be.png",
+        available: true
+    },
+
+    {
+        category: "Energético",
+        name: "Monster",
+        description: "Energético Monster 473ml.",
+        topics: [
+            "Somente o sabor tradicional",
+            //"Consulte os sabores disponiveis"
+        ],
+        price: 11,
+        variants: [
+            {
+               name: "269ml",
+                price: 9
+            },
+            {
+                name: "473L",
+                price: 11
+            },
+        ],
+        image: "img/Produtos/monster.png",
         available: true
     }
 
