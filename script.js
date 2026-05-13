@@ -66,7 +66,102 @@ const products = [
     // =============    GIN    ==================
     // ==========================================
 
+    {
+        category: "Copão",
+        name: "Copão de Eternity",
+        description: "Copão de 700ml com Gin + Baly + Gelo.",
+        topics: [
+            "Consulte os sabores disponíveis de Gin",
+            "Consulte os sabores disponíveis de energetico",
+            "Consulte os sabores disponiveis do gelo"
+        ],
+        price: 15,
+        //variants: [
+        //    {
+        //        name: "250ml",
+        //        price: 10
+        //    },
+        //    {
+        //       name: "355ml",
+        //        price: 14
+        //    },
+        //    {
+        //        name: "473ml",
+        //        price: 18
+        //    },
+        //],
+        image: "img/Produtos/eternity.png",
+        available: true
+    },
 
+
+    // ==========================================
+    // =============    GELOS    ================
+    // ==========================================
+
+    {
+        category: "Gelo de Sabor",
+        name: "Gelo de coco",
+        description: "Gelo de coco 200ml",
+        topics: [
+            "Consulte os sabores disponiveis",
+        ],
+        price: 1,
+        //variants: [
+        //    {
+        //        name: "250ml",
+        //        price: 10
+        //    },
+        //    {
+        //       name: "355ml",
+        //        price: 14
+        //    },
+        //    {
+        //        name: "473ml",
+        //        price: 18
+        //    },
+        //],
+        image: "img/Produtos/gelos.png",
+        available: true
+    },
+
+    // ==========================================
+    // ============   CERVEJA    ================
+    // ==========================================
+
+    {
+        category: "Cerveja",
+        name: "Corona",
+        description: "Cerveja corona Long Neck 330ml",
+        topics: [
+            "",
+            ""
+        ],
+        price: 10,
+        //variants: [
+        //    {
+        //        name: "350ml (LATA)",
+        //        price: 0
+        //    },
+        //    {
+        //       name: "330ml (LONG NECK)",
+        //        price: 0
+        //    },
+        //    {
+        //        name: "600ml (Garrafa)",
+        //        price: 0
+        //    },
+        //],
+        image: "img/Produtos/corona.png",
+        available: true
+    },
+
+    // ==========================================
+    // ============     COMBOS    ===============
+    // ==========================================
+
+
+    
 
     // ==========================================
     // ==========    ENÉRGETICO    ==============
@@ -82,20 +177,20 @@ const products = [
         ],
         price: 11,
 
-        variants: [
-            {
-                name: "250ml",
-                price: 10
-            },
-            {
-               name: "355ml",
-                price: 14
-            },
-            {
-                name: "473ml",
-                price: 18
-            },
-        ],
+        //variants: [
+        //    {
+        //        name: "250ml",
+        //        price: 10
+        //    },
+        //    {
+        //       name: "355ml",
+        //        price: 14
+        //    },
+        //    {
+        //        name: "473ml",
+        //        price: 18
+        //    },
+        //],
 
         image: "img/Produtos/redbull.png",
         available: true
@@ -110,20 +205,20 @@ const products = [
             //"Consulte os sabores disponiveis"
         ],
         price: 10,
-        variants: [
-            {
-                name: "250ml",
-                price: 10
-            },
-            {
-               name: "473ml",
-                price: 14
-            },
-            {
-                name: "2L",
-                price: 18
-            },
-        ],
+        //variants: [
+        //    {
+        //        name: "250ml",
+        //        price: 10
+        //    },
+        //    {
+        //       name: "473ml",
+        //        price: 14
+        //    },
+        //    {
+        //        name: "2L",
+        //        price: 18
+        //    },
+        //],
         image: "img/Produtos/baly.png",
         available: true
     },
@@ -137,16 +232,16 @@ const products = [
             //"Consulte os sabores disponiveis"
         ],
         price: 8,
-        variants: [
-            {
-               name: "473ml",
-                price: 14
-            },
-            {
-                name: "2L",
-                price: 18
-            },
-        ],
+        //variants: [
+        //    {
+        //       name: "473ml",
+        //        price: 14
+        //    },
+        //    {
+        //        name: "2L",
+        //        price: 18
+        //    },
+        //],
         image: "img/Produtos/v!be.png",
         available: true
     },
@@ -160,16 +255,16 @@ const products = [
             //"Consulte os sabores disponiveis"
         ],
         price: 11,
-        variants: [
-            {
-               name: "269ml",
-                price: 9
-            },
-            {
-                name: "473L",
-                price: 11
-            },
-        ],
+        //variants: [
+        //    {
+        //       name: "269ml",
+        //        price: 9
+        //    },
+        //    {
+        //        name: "473L",
+        //        price: 11
+        //    },
+        //],
         image: "img/Produtos/monster.png",
         available: true
     }
