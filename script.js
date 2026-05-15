@@ -16,9 +16,9 @@ const products = [
             "Mais sabores de gelo disponíveis",
             "Consulte os sabores disponíveis de energetico"
         ],
-        price: 35,
+        price: 0,
         image: "img/Produtos/red-premium.png",
-        available: true
+        available: false
     },
 
     {
@@ -29,9 +29,9 @@ const products = [
             "Mais sabores de gelo disponíveis",
             "Consulte os sabores disponíveis de energetico"
         ],
-        price: 28,
+        price: 0,
         image: "img/Produtos/red-basico.png",
-        available: true
+        available: false
     },
 
     {
@@ -43,7 +43,7 @@ const products = [
             "Consulte os sabores disponíveis de energetico",
             "Consulte os sabores disponíveis do whisky"
         ],
-        price: 40,
+        price: 35,
         image: "img/Produtos/jack-premium.png",
         available: true
     },
@@ -59,7 +59,7 @@ const products = [
         ],
         price: 38,
         image: "img/Produtos/jack-basico.png",
-        available: true
+        available: false
     },
 
     // ==========================================
@@ -75,7 +75,7 @@ const products = [
             "Consulte os sabores disponíveis de energetico",
             "Consulte os sabores disponiveis do gelo"
         ],
-        price: 15,
+        price: 0,
         //variants: [
         //    {
         //        name: "250ml",
@@ -91,7 +91,7 @@ const products = [
         //    },
         //],
         image: "img/Produtos/eternity.png",
-        available: true
+        available: false
     },
 
 
@@ -106,7 +106,7 @@ const products = [
         topics: [
             "Consulte os sabores disponiveis",
         ],
-        price: 1,
+        price: 0,
         //variants: [
         //    {
         //        name: "250ml",
@@ -122,7 +122,7 @@ const products = [
         //    },
         //],
         image: "img/Produtos/gelos.png",
-        available: true
+        available: false
     },
 
     // ==========================================
@@ -204,7 +204,7 @@ const products = [
             "Consulte os sabores disponiveis",
             //"Consulte os sabores disponiveis"
         ],
-        price: 10,
+        price: 0,
         //variants: [
         //    {
         //        name: "250ml",
@@ -220,7 +220,7 @@ const products = [
         //    },
         //],
         image: "img/Produtos/baly.png",
-        available: true
+        available: false
     },
 
     {
@@ -243,7 +243,7 @@ const products = [
         //    },
         //],
         image: "img/Produtos/v!be.png",
-        available: true
+        available: false
     },
 
     {
@@ -266,7 +266,7 @@ const products = [
         //    },
         //],
         image: "img/Produtos/monster.png",
-        available: true
+        available: false
     }
 
 ];
@@ -282,13 +282,13 @@ const WHATSAPP_PHONE = "5511917742509";
 // Configure aqui o horário de funcionamento.
 // day: 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
 const OPENING_HOURS = [
-    { day: 0, open: "00:00", close: "00:01" }, // DOMINGO
-    { day: 1, open: "00:00", close: "00:01" }, // SEGUNDA-FEIRA
-    { day: 2, open: "00:00", close: "00:01" }, // TERÇA-FEIRA
-    { day: 3, open: "00:00", close: "00:01" }, // QUARTA-FEIRA
-    { day: 4, open: "00:00", close: "00:01" }, // QUINTA-FEIRA
-    { day: 5, open: "00:00", close: "00:01" }, // SEXTA-FEIRA
-    { day: 6, open: "00:00", close: "00:01" }  // SÁBADO
+    { day: 0, open: "11:00", close: "03:00" }, // DOMINGO
+    { day: 1, open: "11:00", close: "00:00" }, // SEGUNDA-FEIRA
+    { day: 2, open: "11:00", close: "00:00" }, // TERÇA-FEIRA
+    { day: 3, open: "11:00", close: "00:00" }, // QUARTA-FEIRA
+    { day: 4, open: "11:00", close: "00:00" }, // QUINTA-FEIRA
+    { day: 5, open: "18:00", close: "03:00" }, // SEXTA-FEIRA
+    { day: 6, open: "11:00", close: "03:00" }  // SÁBADO
 ];
 
 
