@@ -16,21 +16,22 @@ const products = [
             "Mais sabores de gelo disponíveis",
             "Consulte os sabores disponíveis de energetico"
         ],
-        price: 35,
+        price: 32,
         image: "img/Produtos/red-premium.png",
         available: true
     },
 
     {
         category: "Copão",
-        name: "Copão de Red Label Básico",
-        description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
+        name: "Copão de Jim Beam Premium",
+        description: "Copão de 700ml com Whisky + Red Bull 250ml + Gelo de coco.",
         topics: [
             "Mais sabores de gelo disponíveis",
-            "Consulte os sabores disponíveis de energetico"
+            "Consulte os sabores disponíveis de energetico",
+            "Consulte os sabores disponíveis do whisky"
         ],
-        price: 28,
-        image: "img/Produtos/red-basico.png",
+        price: 35,
+        image: "img/Produtos/jimbeam-premium.png",
         available: true
     },
 
@@ -48,19 +49,19 @@ const products = [
         available: true
     },
 
-    {
-        category: "Copão",
-        name: "Copão de Jack Daniels Básico",
-        description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
-        topics: [
-            "Mais sabores de gelo disponíveis",
-            "Consulte os sabores disponíveis de energetico",
-            "Consulte os sabores disponíveis do whisky"
-        ],
-        price: 38,
-        image: "img/Produtos/jack-basico.png",
-        available: true
-    },
+    //{
+    //    category: "Copão",
+    //    name: "Copão de Jack Daniels Básico",
+    //    description: "Copão de 700ml com Whisky + Energético Vibe + Gelo de coco.",
+    //    topics: [
+    //        "Mais sabores de gelo disponíveis",
+    //        "Consulte os sabores disponíveis de energetico",
+    //        "Consulte os sabores disponíveis do whisky"
+    //    ],
+    //    price: 38,
+    //    image: "img/Produtos/jack-basico.png",
+    //    available: true
+    //},
 
     // ==========================================
     // =============    GIN    ==================
@@ -277,18 +278,18 @@ const products = [
 // ==========================================
 
 const CART_KEY = "adega-cart";
-const WHATSAPP_PHONE = "5511917742509";
+const WHATSAPP_PHONE = "5511962830040";
 
 // Configure aqui o horário de funcionamento.
 // day: 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
 const OPENING_HOURS = [
-    { day: 0, open: "00:00", close: "00:01" }, // DOMINGO
-    { day: 1, open: "00:00", close: "00:01" }, // SEGUNDA-FEIRA
-    { day: 2, open: "00:00", close: "00:01" }, // TERÇA-FEIRA
-    { day: 3, open: "00:00", close: "00:01" }, // QUARTA-FEIRA
-    { day: 4, open: "00:00", close: "00:01" }, // QUINTA-FEIRA
-    { day: 5, open: "00:00", close: "00:01" }, // SEXTA-FEIRA
-    { day: 6, open: "00:00", close: "00:01" }  // SÁBADO
+    { day: 0, open: "11:00", close: "03:00" }, // DOMINGO
+    { day: 1, open: "11:00", close: "00:00" }, // SEGUNDA-FEIRA
+    { day: 2, open: "11:00", close: "00:00" }, // TERÇA-FEIRA
+    { day: 3, open: "11:00", close: "00:00" }, // QUARTA-FEIRA
+    { day: 4, open: "11:00", close: "00:00" }, // QUINTA-FEIRA
+    { day: 5, open: "11:00", close: "03:00" }, // SEXTA-FEIRA
+    { day: 6, open: "11:00", close: "03:00" }  // SÁBADO
 ];
 
 
